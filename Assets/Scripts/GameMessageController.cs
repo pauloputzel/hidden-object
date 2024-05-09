@@ -20,16 +20,21 @@ public class GameMessageController : MonoBehaviour
     {
         if (displayTimer > 0f && displayTimer < Time.time) 
         {
-            displayTimer = 0f;
-            gameObject.SetActive(false);
-            textMeshPro.text = "";
+            hidePanel();
         }
     }
 
     public void showMessage(string message)
     {
-        textMeshPro.text = message;
         displayTimer = Time.time + displayingSeconds;
+        textMeshPro.text = message;
         gameObject.SetActive(true);
+    }
+
+    private void hidePanel()
+    {
+        displayTimer = 0f;
+        textMeshPro.text = "";
+        gameObject.SetActive(false);
     }
 }

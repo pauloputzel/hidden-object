@@ -1,74 +1,176 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using UnityEditor.VersionControl;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //Variável estática (todas as instâncias dessa classe compartilham o mesmo valor)
+    //Usada para armazenar a instância atual de GameManager
+    //Permitindo acesso em outras classes apenas usando GameManager.instance
     public static GameManager instance;
 
-    public float musicaVolume;
+    //Estas são as propriedades do GameManager
+    //Propriedades funcionam como atalhos para acessar e manipular informações
+    //Também permitem a execução de outros códigos ao buscar ou alterar a propriedade
+    public string nomePersonagem
+    {
+        //ao usar GameManager.instance.nomePersonagem é retornado o nome do personagem armazenado na estrutura de dados
+        get => saveGameManager.playerData.name;
+        //ao usar GameManager.instance.nomePersonagem = "Fulano" é armazenado o nome do personagem e salvo em arquivo
+        set
+        {
+            saveGameManager.playerData.name = value;
+            saveGameManager.SaveGame();
+        }
+    }
 
-    public bool mudo = false;
+    //Propriedade jogoIniciado que define quando um jogo já foi salvo com informações relevantes para continuar a gameplay
+    public bool jogoIniciado
+    {
+        get => saveGameManager.playerData.jogoIniciado;
+        set
+        {
+            saveGameManager.playerData.jogoIniciado = value;
+            saveGameManager.SaveGame();
+        }
+    }
 
-    public float displayingGameMessageSeconds = 2.3f;
+    //Propriedade de nível de música alterado pelo painel de Opções
+    public float musicaVolume
+    {
+        get => saveGameManager.playerData.musicVolume;
+        set
+        {
+            //altera a propriedade volume do Componente AudioSource do GameManager
+            mAudioSource.volume = value;
+            //altera o valor na estrutura de dados do SaveGame
+            saveGameManager.playerData.musicVolume = value;
+            //executa o método SaveGame salvando o jogo em arquivo
+            saveGameManager.SaveGame();
+        }
+    }
 
+    //Propriedade muted que altera a existência de som no jogo
+    public bool muted
+    {
+        get => saveGameManager.playerData.muted;
+        set
+        {
+            //A exclamação antes de value inverte a condição do bool que está recebendo
+            //Se GameManager.instance.muted = true
+            //então a propriedade enabled do componente de escuta recebe o oposto (false)
+            mAudioListener.enabled = !value;
+            //armazena o valor na estrutura de dados e salva
+            saveGameManager.playerData.muted = value;
+            saveGameManager.SaveGame();
+        }
+    } 
+
+    //Tempo de exibição de mensagem de jogo em segundos 
+    public float showGameMessageSeconds = 2.3f;
+
+    //Quantidade máxima de coletáveis que serão exibidos
     public int maximoColetavel;
 
-    public List<ColetavelName> listaColetaveis;
-
-    public List<ColetavelName> listaColetados = new List<ColetavelName>();
-
-    private List<ColetavelName> originalListColetaveis;
-
+    //Componente do Gameobject GameManager para controle do muted
     private AudioListener mAudioListener;
 
+    //Componente do Gameobject GameManager para controle de volume da música
     private AudioSource mAudioSource;
 
-    private Personagem personagem;
-
+    //Controle do GameObject GameMessage que foi pré adicionado na scene atual
+    //O GameMessage faz seu registro nesta propriedade 
     private GameMessageController gameMessage;
 
+    //Classe responsável por salvar o jogo
+    //O próprio GameManager cria um objeto dessa classe ao iniciar
+    private SaveGameManager saveGameManager;
+
+    //Gerenciador de níveis
+    //Ao iniciar uma scene onde exista um GameObject LevelManager
+    //este irá armazenar sua referência aqui
+    private LevelManager levelManager;
+
+    //Ao iniciar um GameObject adicionado na scene
     public void Start()
     {
+        //se ainda não foi registrado nenhum GameManager
+        //então esse seria o primeiro a ser adicionado
         if (instance == null)
         {
-            mAudioListener = GetComponent<AudioListener>();
-            mAudioSource = GetComponent<AudioSource>();
-            originalListColetaveis = listaColetaveis;
+            //assume o controle do jogo e incia configuração
 
+            //registra componente de escuta de Audio no jogo
+            mAudioListener = GetComponent<AudioListener>();
+
+            //registra componente de Musica do jogo
+            mAudioSource = GetComponent<AudioSource>();
+
+            //inicia um novo Gerenciador de SaveGame
+            //o Gerenciador já busca pelo jogo salvo ao ser iniciado
+            saveGameManager = new SaveGameManager();
+
+            //ajusta o volume do componente conforme salvo em arquivo
+            mAudioSource.volume = saveGameManager.playerData.musicVolume;
+
+            //muta ou desmuta o jogo conforme salvo em arquivo
+            mAudioListener.enabled = !saveGameManager.playerData.muted;
+
+            //armaezena esse próprio primeiro GameManager na variável instance assumindo o controle do jogo
             instance = this;
+
+            //Configura esse GameObject para não ser destruído ao trocar de scene
             DontDestroyOnLoad(gameObject);
         }
         else
         {
+            //Só é possível existir UM GameManager no jogo
+            //Caso outro GameManager seja adicionado 
+            //já vai existir outro GameManager adicionado na variável instance
+            //Portanto qualquer tentativa novo registro resulta em remoção desse objeto
             Destroy(gameObject);
         }
     }
 
-    public void setPersonagem(PersonagemName personagemName)
+    //método de registro de LevelManager que é executado no OnStart do LevelManager em cada scene
+    public void setLevelManager(LevelManager novoLevelManager)
     {
-        personagem = new Personagem(personagemName);
+        levelManager = novoLevelManager;
     }
 
-    public void setGameMessage(GameMessageController gameMessage)
+    //método para coletar um item
+    //dessa forma podemos adicionar regras de jogo ao coletar qualquer item no jogo todo
+    public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)
+    {
+        if (levelManager) levelManager.coletarItem(coletavelNome, coletavel);
+    }
+
+    public bool itemEstaNaListaDeColetaveis(ColetavelName nomeColetavel)
+    {
+        return getLevelProximosColetaveisList().Contains(nomeColetavel);
+    }
+
+    //retorna a lista dos N máximos itens que o jogador pode coletar no momento
+    public List<ColetavelName> getLevelProximosColetaveisList()
+    {
+        return levelManager ? levelManager.getLevelProximosColetaveisList() : new List<ColetavelName>();
+    }
+
+    public void saveGame()
+    {
+        saveGameManager.SaveGame();
+    }
+
+    public void setGameMessageController(GameMessageController gameMessage)
     {
         this.gameMessage = gameMessage;
-        this.gameMessage.displayingSeconds = displayingGameMessageSeconds;
+        this.gameMessage.displaySeconds = showGameMessageSeconds;
     }
 
-    public void displayGameMessage(string message)
+    public void showGameMessage(string message)
     {
         if (gameMessage) gameMessage.showMessage(message);
-    }
-
-    public void carregarMapaPersonagem()
-    {
-        carregarScene(personagem.getMapaScene());
     }
 
     public void carregarScene(string nomeScene)
@@ -78,81 +180,6 @@ public class GameManager : MonoBehaviour
 
     public void resetGame()
     {
-        listaColetaveis = originalListColetaveis;
         carregarScene("MenuScene");
-    }
-
-    public void setMusicaVolume(float volume)
-    {
-        musicaVolume = volume;
-        mAudioSource.volume = volume;
-    }
-
-    public void setMudo(bool mudo)
-    {
-        this.mudo = mudo;
-        mAudioListener.enabled = !mudo;
-    }
-
-    public List<ColetavelName> getListaColevateis()
-    {
-        //Pega os primeiros X itens da lista
-        return listaColetaveis.Take(maximoColetavel).ToList();
-    }
-
-    public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)
-    {
-        if (personagem.name == PersonagemName.Todd)
-        {
-            displayGameMessage("Todd parece não entender porque você está apontando"); 
-            return;
-        }
-
-        //separando os X primeiros itens da lista de itens para respeitar regra do jogo
-        List<ColetavelName> primeirosMaxItens = getListaColevateis();
-
-        //encontrando se o item esta entre a lista dos primeiros, Find busca o item para cada x (Coletavel) se o nome é o mesmo
-        ColetavelName coletavelEncontrado = primeirosMaxItens.Find(x => x == coletavelNome);
-
-        //Se Find não encontrar o item coletavelEncontrado será "Nenhum"
-        if (coletavelEncontrado == ColetavelName.Nenhum)
-        {
-            string message = $"Esse item não está na lista de primeiros {maximoColetavel} itens coletaveis";
-            Debug.Log(message);
-            displayGameMessage(message);
-
-        } else
-        {
-            string message = $"Parabéns {GetEnumDescription(coletavelEncontrado)} encontrado!";
-            Debug.Log(message);
-            displayGameMessage(message);
-            listaColetaveis.Remove(coletavelEncontrado);
-            listaColetados.Add(coletavelEncontrado);
-            Destroy(coletavel);
-        }
-
-        if (listaColetaveis.Count == 0)
-        {
-            carregarScene("GameOverScene");
-        }
-    }
-
-    public static string GetEnumDescription(Enum en)
-    {
-        Type type = en.GetType();
-
-        MemberInfo[] memInfo = type.GetMember(en.ToString());
-
-        if (memInfo != null && memInfo.Length > 0)
-        {
-            object[] attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
-
-            if (attrs != null && attrs.Length > 0)
-            {
-                return ((DescriptionAttribute)attrs[0]).Description;
-            }
-        }
-
-        return en.ToString();
     }
 }

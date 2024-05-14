@@ -12,24 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/PersonagemScene.unity
     guid: d240cd1a2c51a934088927ad386457fb
   - enabled: 1
-    path: Assets/Scenes/Mapas/ToddMapaScene.unity
-    guid: 0bddb040072d3754db89f21732de730c
-  - enabled: 1
-    path: Assets/Scenes/Mapas/PeterMapaScene.unity
-    guid: 8c3545d2afc716d41b0a4f4a3f203851
-  - enabled: 1
-    path: Assets/Scenes/Mapas/GokuMapaScene.unity
-    guid: 5ce6766580e192c4682ac5ef87442a09
-  - enabled: 1
-    path: Assets/Scenes/Mapas/GokuLocais/CasaLocal_1.unity
-    guid: 8f6209f9a19e37440804440b35737a8f
-  - enabled: 1
-    path: Assets/Scenes/Mapas/GokuLocais/CasaLocal_2.unity
-    guid: d7ed41fab5f161340a3a4af7dc767162
-  - enabled: 1
-    path: Assets/Scenes/Mapas/GokuLocais/CasaLocal_3.unity
-    guid: 04b7c7c8d5631384b81019a384c4437e
-  - enabled: 1
     path: Assets/Scenes/GameOverScene.unity
     guid: fd87d09384fb5374182ad37ba737f8b4
+  - enabled: 1
+    path: Assets/Scenes/MapaScene.unity
+    guid: 5ce6766580e192c4682ac5ef87442a09
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level01.unity
+    guid: 8f6209f9a19e37440804440b35737a8f
   m_configObjects: {}

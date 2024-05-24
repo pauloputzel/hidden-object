@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class LevelManager : MonoBehaviour
 
     public List<ColetavelName> listaColetados = new List<ColetavelName>();
 
+    public float timer_left;
+    public float score;
     public void Start()
     {
         GameManager.instance.setLevelManager(this);
@@ -41,10 +44,13 @@ public class LevelManager : MonoBehaviour
             listaColetaveis.Remove(coletavelEncontrado);
             listaColetados.Add(coletavelEncontrado);
             Destroy(coletavel);
+            score += GameManager.instance.pontoporitem;
         }
 
         if (listaColetaveis.Count == 0)
         {
+            score +=Mathf.Floor((GameManager.instance.contador_timer - timer_left) * 10000);
+            GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, score);
             GameManager.instance.carregarScene("GameOverScene");
         }
     }

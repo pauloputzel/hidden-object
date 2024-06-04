@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     //Usada para armazenar a instância atual de GameManager
     //Permitindo acesso em outras classes apenas usando GameManager.instance
     public static GameManager instance;
+    public float contador_timer = 90;
+    public float pontoporitem = 5000;
 
     //Estas são as propriedades do GameManager
     //Propriedades funcionam como atalhos para acessar e manipular informações
@@ -156,7 +158,35 @@ public class GameManager : MonoBehaviour
     {
         return levelManager ? levelManager.getLevelProximosColetaveisList() : new List<ColetavelName>();
     }
+    public void LevelTimerUpdate(float time)
+    {
+        levelManager.timer_left = time;
+    }
+    public void LevelTimeOut()
+    {
+       carregarScene("GameOverScene");
+    }
 
+    public void SaveLevel(string nome, float score)
+    {
+        LevelData levelData = saveGameManager.playerData.levelDataList.Find(x => x.name == nome);
+
+        if (levelData == null)
+        {
+            levelData = new LevelData();
+            levelData.name = nome;
+            saveGameManager.playerData.levelDataList.Add(levelData);
+        }
+        
+        levelData.score += score;
+
+        saveGameManager.SaveGame();
+    }
+
+    public float GetLevelScore()
+    {
+        return levelManager.score;
+    }
     public void saveGame()
     {
         saveGameManager.SaveGame();

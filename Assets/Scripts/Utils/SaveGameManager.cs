@@ -48,7 +48,7 @@ public class PlayerData
 public class LevelData
 {
     public string name;
-    public float score;
+    public float score=0;
     public List<ColetavelData> itensColetadosList = new List<ColetavelData>();
     public List<ColetavelData> itensColetaveisList = new List<ColetavelData>();
 }

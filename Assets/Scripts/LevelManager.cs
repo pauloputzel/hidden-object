@@ -9,13 +9,23 @@ public class LevelManager : MonoBehaviour
 
     public List<ColetavelName> listaColetados = new List<ColetavelName>();
 
-    public float timer_left;
-    public float score;
+    public float timeLeft
+    {
+        get => _timeLeft;
+        set => _timeLeft = value;
+    }
+
+    public float score
+    {
+        get => _score;
+    }
+
+    private float _timeLeft;
+    private float _score;
     public void Start()
     {
         GameManager.instance.setLevelManager(this);
     }
-
 
     public List<ColetavelName> getLevelProximosColetaveisList()
     {
@@ -25,7 +35,6 @@ public class LevelManager : MonoBehaviour
 
     public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)
     {
-
         //separando os X primeiros itens da lista de itens para respeitar regra do jogo
         List<ColetavelName> primeirosMaxItens = getLevelProximosColetaveisList();
 
@@ -35,22 +44,21 @@ public class LevelManager : MonoBehaviour
         //Se Find não encontrar o item coletavelEncontrado será "Nenhum"
         if (coletavelEncontrado == ColetavelName.Nenhum)
         {
-            GameManager.instance.showGameMessage($"Esse item não está na lista de primeiros {GameManager.instance.maximoColetavel} itens coletaveis");
-
+            //GameManager.instance.showGameMessage($"Esse item não está na lista de primeiros {GameManager.instance.maximoColetavel} itens coletaveis");
         }
         else
         {
-            GameManager.instance.showGameMessage($"Parabéns {EnumUtils.GetEnumDescription(coletavelEncontrado)} encontrado!");
+            //GameManager.instance.showGameMessage($"Parabéns {EnumUtils.GetEnumDescription(coletavelEncontrado)} encontrado!");
             listaColetaveis.Remove(coletavelEncontrado);
             listaColetados.Add(coletavelEncontrado);
             Destroy(coletavel);
-            score += GameManager.instance.pontoporitem;
+            _score += GameManager.instance.pontoBasePorItem;
         }
 
         if (listaColetaveis.Count == 0)
         {
-            score +=Mathf.Floor((GameManager.instance.contador_timer - timer_left) * 10000);
-            GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, score);
+            _score += Mathf.Floor((GameManager.instance.contadorTimerSegundos - _timeLeft) * 10000);
+            GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, _score);
             GameManager.instance.carregarScene("GameOverScene");
         }
     }

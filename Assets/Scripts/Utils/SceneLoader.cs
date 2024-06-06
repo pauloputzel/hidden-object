@@ -5,6 +5,6 @@ public class SceneLoader : MonoBehaviour
 {
     public void loadSceneName(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        GameManager.instance.carregarScene(sceneName);
     }
 }

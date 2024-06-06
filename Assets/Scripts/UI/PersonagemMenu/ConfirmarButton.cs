@@ -17,6 +17,6 @@ public class ConfirmarButton : MonoBehaviour
 
         GameManager.instance.nomePersonagem = inputField.text;
         GameManager.instance.jogoIniciado = true;
-        SceneManager.LoadScene("MapaScene");
+        GameManager.instance.carregarScene("MapaScene");
     }
 }

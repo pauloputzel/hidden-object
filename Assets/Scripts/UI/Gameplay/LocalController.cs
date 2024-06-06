@@ -7,6 +7,6 @@ public class LocalController : MonoBehaviour
 
     void OnMouseDown()
     {
-        SceneManager.LoadScene(nomeScene);
+        GameManager.instance.carregarScene(nomeScene);
     }
 }

@@ -8,8 +8,21 @@ public class GameManager : MonoBehaviour
     //Usada para armazenar a instância atual de GameManager
     //Permitindo acesso em outras classes apenas usando GameManager.instance
     public static GameManager instance;
-    public float contador_timer = 90;
-    public float pontoporitem = 5000;
+
+    //Tempo base de duração de um nível em segundos
+    public float contadorTimerSegundos = 90;
+
+    //Pontuação base de um item coletado
+    public float pontoBasePorItem = 5000;
+
+    //Quantidade máxima de coletáveis que serão exibidos
+    public int maximoColetavel;
+
+    //Tempo de exibição de load de jogo em segundos 
+    public float tempoMinimoLoadSegundos = 1f;
+
+    //Tempo de exibição de mensagem de jogo em segundos 
+    public float showGameMessageSeconds = 2.3f;
 
     //Estas são as propriedades do GameManager
     //Propriedades funcionam como atalhos para acessar e manipular informações
@@ -66,13 +79,12 @@ public class GameManager : MonoBehaviour
             saveGameManager.playerData.muted = value;
             saveGameManager.SaveGame();
         }
-    } 
+    }
 
-    //Tempo de exibição de mensagem de jogo em segundos 
-    public float showGameMessageSeconds = 2.3f;
-
-    //Quantidade máxima de coletáveis que serão exibidos
-    public int maximoColetavel;
+    public string nextSceneToLoad
+    {
+        get => sceneNameToLoad;
+    }
 
     //Componente do Gameobject GameManager para controle do muted
     private AudioListener mAudioListener;
@@ -92,6 +104,8 @@ public class GameManager : MonoBehaviour
     //Ao iniciar uma scene onde exista um GameObject LevelManager
     //este irá armazenar sua referência aqui
     private LevelManager levelManager;
+
+    private string sceneNameToLoad = "MenuScene";
 
     //Ao iniciar um GameObject adicionado na scene
     public void Start()
@@ -159,7 +173,7 @@ public class GameManager : MonoBehaviour
     }
     public void LevelTimerUpdate(float time)
     {
-        levelManager.timer_left = time;
+        levelManager.timeLeft = time;
     }
     public void LevelTimeOut()
     {
@@ -204,7 +218,8 @@ public class GameManager : MonoBehaviour
 
     public void carregarScene(string nomeScene)
     {
-        SceneManager.LoadScene(nomeScene);
+        sceneNameToLoad = nomeScene;
+        SceneManager.LoadScene("LoadScene");
     }
 
     public void resetGame()

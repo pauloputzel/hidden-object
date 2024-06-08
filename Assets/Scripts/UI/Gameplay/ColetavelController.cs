@@ -11,6 +11,12 @@ public class ColetavelController : MonoBehaviour
 
     void OnMouseDown()
     {
-        GameManager.instance.coletarItem(nome, gameObject);
+        RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        Debug.Log(hitInfo.collider.gameObject.name);
+        if (hitInfo && gameObject == hitInfo.collider.gameObject)
+        {
+            GameManager.instance.coletarItem(nome, gameObject);
+        }
     }
 }

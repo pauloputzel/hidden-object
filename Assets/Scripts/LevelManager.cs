@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public ColetavelPanelController coletavelPanelController;
+
     public List<ColetavelName> listaColetaveis;
 
     public List<ColetavelName> listaColetados = new List<ColetavelName>();
@@ -53,6 +55,7 @@ public class LevelManager : MonoBehaviour
             listaColetados.Add(coletavelEncontrado);
             Destroy(coletavel);
             _score += GameManager.instance.pontoBasePorItem;
+            coletavelPanelController.criarItens();
         }
 
         if (listaColetaveis.Count == 0)

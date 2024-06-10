@@ -42,20 +42,13 @@ public class PlayerData
     public float musicVolume = 1.0f;
     public bool muted = false;
     public List<LevelData> levelDataList = new List<LevelData>();
+    public List<ColetavelName> itensColetados = new List<ColetavelName>();
 }
 
 [System.Serializable]
 public class LevelData
 {
     public string name;
-    public float score=0;
-    public List<ColetavelData> itensColetadosList = new List<ColetavelData>();
-    public List<ColetavelData> itensColetaveisList = new List<ColetavelData>();
-}
-
-[System.Serializable]
-public class ColetavelData
-{
-    public int indiceNaListaOriginal;
-    public ColetavelName nome;
+    public int ultimaFaseConcluida = 0;
+    public float score = 0;
 }

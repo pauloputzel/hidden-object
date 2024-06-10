@@ -365,11 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9fcee24f77a7e74eb46fe2a65de5d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contadorTimerSegundos: 90
-  pontoBasePorItem: 5000
-  maximoColetavel: 9
-  tempoMinimoLoadSegundos: 1
-  showGameMessageSeconds: 2.3
+  gameManagerData: {fileID: 11400000, guid: 8251ab9e000377944afebe314ab46f93, type: 2}
 --- !u!4 &777022976
 Transform:
   m_ObjectHideFlags: 0

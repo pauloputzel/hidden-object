@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,20 +10,52 @@ public class GameManager : MonoBehaviour
     //Permitindo acesso em outras classes apenas usando GameManager.instance
     public static GameManager instance;
 
+    public GameManagerScriptableObject gameManagerData;
+
     //Tempo base de duração de um nível em segundos
-    public float contadorTimerSegundos = 90;
+    public float contadorTimerSegundos
+    {
+        get => levelManager ? levelManager.contadorSegundos : 90f;
+        set {
+            if (levelManager)
+            {
+                levelManager.contadorSegundos = value;
+            }
+        }
+    }
 
     //Pontuação base de um item coletado
-    public float pontoBasePorItem = 5000;
+    public float pontoBasePorItem
+    {
+        get => levelManager ? levelManager.pontoBasePorItem : 5000f;
+    }
 
     //Quantidade máxima de coletáveis que serão exibidos
-    public int maximoColetavel;
+    public int maximoColetavel
+    {
+        get => levelManager ? levelManager.maximoColetavel : 9;
+    }
+
+    public List<ColetavelName> listaItensColetaveis
+    {
+        get => levelManager ? levelManager.listaItensColetaveis : null;
+    }
 
     //Tempo de exibição de load de jogo em segundos 
-    public float tempoMinimoLoadSegundos = 1f;
+    public float tempoMinimoLoadSegundos
+    {
+        get => gameManagerData.tempoMinimoLoadSegundos;
+        set => gameManagerData.tempoMinimoLoadSegundos = value;
+
+    }
 
     //Tempo de exibição de mensagem de jogo em segundos 
-    public float showGameMessageSeconds = 2.3f;
+    public float showGameMessageSeconds
+    {
+        get => gameManagerData.showGameMessageSeconds;
+        set => gameManagerData.showGameMessageSeconds = value;
+
+    }
 
     //Estas são as propriedades do GameManager
     //Propriedades funcionam como atalhos para acessar e manipular informações
@@ -163,14 +196,9 @@ public class GameManager : MonoBehaviour
 
     public bool itemEstaNaListaDeColetaveis(ColetavelName nomeColetavel)
     {
-        return getLevelProximosColetaveisList().Contains(nomeColetavel);
+        return levelManager ? levelManager.listaItensColetaveis.Contains(nomeColetavel) : false;
     }
 
-    //retorna a lista dos N máximos itens que o jogador pode coletar no momento
-    public List<ColetavelName> getLevelProximosColetaveisList()
-    {
-        return levelManager ? levelManager.getLevelProximosColetaveisList() : new List<ColetavelName>();
-    }
     public void LevelTimerUpdate(float time)
     {
         levelManager.timeLeft = time;
@@ -180,7 +208,7 @@ public class GameManager : MonoBehaviour
        carregarScene("GameOverScene");
     }
 
-    public void SaveLevel(string nome, float score)
+    public void SaveLevel(string nome, List<ColetavelName> itensColetados, int faseAtual, float score)
     {
         LevelData levelData = saveGameManager.playerData.levelDataList.Find(x => x.name == nome);
 
@@ -190,7 +218,10 @@ public class GameManager : MonoBehaviour
             levelData.name = nome;
             saveGameManager.playerData.levelDataList.Add(levelData);
         }
-        
+
+        saveGameManager.playerData.itensColetados.Concat(itensColetados);
+
+        levelData.ultimaFaseConcluida = faseAtual;
         levelData.score += score;
 
         saveGameManager.SaveGame();

@@ -41,9 +41,7 @@ public class SceneLoaderManager : MonoBehaviour
 
         while (asyncLoad.progress < 0.9f || timeMinLoadCutoff > Time.time)
         {
-            //Debug.Log($"Passaram {Time.time} para {timeMinLoadCutoff}");
-            //Debug.Log($"Progresso {asyncLoad.progress} ");
-            percentText.text = $"{asyncLoad.progress * 100}%";
+            percentText.text = asyncLoad.progress < 0.9f ? $"{asyncLoad.progress * 100}%" : "100%";
             yield return null;
         }
 

@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
 
     public ColetavelPanelController coletavelPanelController;
     public TextMeshProUGUI scoreDisplayText;
+    public ComboProgressBar comboProgressBar;
 
     //Tempo base de duração de um nível em segundos
     public float contadorSegundos
@@ -53,6 +54,8 @@ public class LevelManager : MonoBehaviour
     private float _timeLeft;
     private float _score;
     private int faseAtual = 0;
+    private int qtdItensColetadosSemErrar = 0;
+    private bool comboCheio = false;
     private List<ColetavelName> _itensColetaveisList = new List<ColetavelName>();
     private List<ColetavelName> itensColetadosList = new List<ColetavelName>();
 
@@ -76,6 +79,7 @@ public class LevelManager : MonoBehaviour
         //Se Find não encontrar o item coletavelEncontrado será "Nenhum"
         if (coletavelEncontrado != ColetavelName.Nenhum)
         {
+            EncherCombo();
             //GameManager.instance.showGameMessage($"Parabéns {EnumUtils.GetEnumDescription(coletavelEncontrado)} encontrado!");
             _itensColetaveisList.Remove(coletavelEncontrado);
 
@@ -86,9 +90,13 @@ public class LevelManager : MonoBehaviour
             _score += levelManagerData.pontoBasePorItem;
 
             coletavelPanelController.criarListaDeItens();
+
+        } else
+        {
+            EsvaziarCombo();
         }
 
-        if (levelManagerData.listaFases[faseAtual].listaColetaveis.Count == 0)
+        if (_itensColetaveisList.Count == 0)
         {
             _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
 
@@ -96,5 +104,26 @@ public class LevelManager : MonoBehaviour
 
             GameManager.instance.carregarScene("GameOverScene");
         }
+    }
+
+    private void EncherCombo()
+    {
+        qtdItensColetadosSemErrar++;
+
+        if (qtdItensColetadosSemErrar > levelManagerData.quantidadeItensParaComboCheio)
+        {
+            comboCheio = true;
+        }
+
+        int qtd = Mathf.Min(qtdItensColetadosSemErrar, levelManagerData.quantidadeItensParaComboCheio);
+        float percent = ((float) qtd / (float) levelManagerData.quantidadeItensParaComboCheio) * 100f;
+        comboProgressBar.UpdateValue(percent);
+    }
+
+    private void EsvaziarCombo()
+    {
+        comboCheio = false;
+        qtdItensColetadosSemErrar = 0;
+        comboProgressBar.SetEmpty();
     }
 }

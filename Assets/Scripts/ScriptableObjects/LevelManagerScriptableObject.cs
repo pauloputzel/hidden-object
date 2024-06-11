@@ -24,4 +24,7 @@ public class LevelManagerScriptableObject : ScriptableObject
 
     //Pontuação base de um item coletado
     public float pontoBasePorItem = 5000;
+
+    //Quantidade de itens necessários coletar para encher o combo
+    public int quantidadeItensParaComboCheio = 3;
 }

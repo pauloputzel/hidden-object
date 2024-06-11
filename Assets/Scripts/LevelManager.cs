@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public LevelManagerScriptableObject levelManagerData;
 
     public ColetavelPanelController coletavelPanelController;
+    public TextMeshProUGUI scoreDisplayText;
 
     //Tempo base de duração de um nível em segundos
     public float contadorSegundos
@@ -60,6 +62,11 @@ public class LevelManager : MonoBehaviour
         _itensColetaveisList = levelManagerData.listaFases[faseAtual].listaColetaveis.Take(GameManager.instance.maximoColetavel).ToList();
     }
 
+    public void Update()
+    {
+        scoreDisplayText.text = _score.ToString();
+    }
+
     public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)
     {
 
@@ -67,24 +74,26 @@ public class LevelManager : MonoBehaviour
         ColetavelName coletavelEncontrado = _itensColetaveisList.Find(x => x == coletavelNome);
 
         //Se Find não encontrar o item coletavelEncontrado será "Nenhum"
-        if (coletavelEncontrado == ColetavelName.Nenhum)
-        {
-            //GameManager.instance.showGameMessage($"Esse item não está na lista de primeiros {GameManager.instance.maximoColetavel} itens coletaveis");
-        }
-        else
+        if (coletavelEncontrado != ColetavelName.Nenhum)
         {
             //GameManager.instance.showGameMessage($"Parabéns {EnumUtils.GetEnumDescription(coletavelEncontrado)} encontrado!");
             _itensColetaveisList.Remove(coletavelEncontrado);
+
             itensColetadosList.Add(coletavelEncontrado);
+
             Destroy(coletavel);
+
             _score += levelManagerData.pontoBasePorItem;
+
             coletavelPanelController.criarListaDeItens();
         }
 
         if (levelManagerData.listaFases[faseAtual].listaColetaveis.Count == 0)
         {
             _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
+
             GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, itensColetadosList, faseAtual, _score);
+
             GameManager.instance.carregarScene("GameOverScene");
         }
     }

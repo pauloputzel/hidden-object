@@ -72,6 +72,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public string scoreTotal
+    {
+        get
+        {
+            float scoreT = 0f;
+            saveGameManager.playerData.levelDataList.ForEach(x => x.faseDataList.ForEach(y => scoreT += y.score ));
+            return scoreT.ToString();
+        }
+    }
+
+    public string levelAtual
+    {
+        get => _levelAtual;
+        set
+        {
+            _levelAtual = value;
+        }
+    }
+
+    public int faseAtual
+    {
+        get =>  _faseAtual;
+    }
+
     //Propriedade jogoIniciado que define quando um jogo já foi salvo com informações relevantes para continuar a gameplay
     public bool jogoIniciado
     {
@@ -139,6 +163,9 @@ public class GameManager : MonoBehaviour
     private LevelManager levelManager;
 
     private string sceneNameToLoad = "MenuScene";
+
+    private string _levelAtual = "";
+    private int _faseAtual = 0;
 
     //Ao iniciar um GameObject adicionado na scene
     public void Start()
@@ -219,10 +246,10 @@ public class GameManager : MonoBehaviour
             saveGameManager.playerData.levelDataList.Add(levelData);
         }
 
-        saveGameManager.playerData.itensColetados.Concat(itensColetados);
+        //saveGameManager.playerData.itensColetados.Concat(itensColetados);
 
         levelData.ultimaFaseConcluida = faseAtual;
-        levelData.score += score;
+        //levelData.score += score;
 
         saveGameManager.SaveGame();
     }

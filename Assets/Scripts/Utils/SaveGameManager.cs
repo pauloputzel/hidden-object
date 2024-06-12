@@ -21,7 +21,7 @@ public class SaveGameManager
 
         } catch (FileNotFoundException)
         {
-            Debug.Log($"Arquivo de save não encontrado em: ${playerDataPath}");
+            Debug.Log($"Criando novo savegame em: ${playerDataPath}");
             SaveGame();
         }
     }
@@ -42,7 +42,6 @@ public class PlayerData
     public float musicVolume = 1.0f;
     public bool muted = false;
     public List<LevelData> levelDataList = new List<LevelData>();
-    public List<ColetavelName> itensColetados = new List<ColetavelName>();
 }
 
 [System.Serializable]
@@ -50,5 +49,14 @@ public class LevelData
 {
     public string name;
     public int ultimaFaseConcluida = 0;
-    public float score = 0;
+    public List<FaseData> faseDataList = new List<FaseData>();
 }
+
+[System.Serializable]
+public class FaseData
+{
+    public string name;
+    public float score = 0;
+    public List<ColetavelName> itensColetados = new List<ColetavelName>();
+}
+

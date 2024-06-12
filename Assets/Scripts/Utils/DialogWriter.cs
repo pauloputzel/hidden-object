@@ -15,6 +15,7 @@ public class DialogWriter : MonoBehaviour
     private Dictionary<string, string> replaces = new Dictionary<string, string>
     {   //Variáveis do texto devem ser escritas no Text com chaves ex {JOGADOR_NOME}
         {"JOGADOR_NOME", GameManager.instance.nomePersonagem},
+        {"SCORE_TOTAL", GameManager.instance.scoreTotal},
     };
 
     void Awake()

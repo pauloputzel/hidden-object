@@ -62,6 +62,7 @@ public class LevelManager : MonoBehaviour
     public void Start()
     {
         GameManager.instance.setLevelManager(this);
+        //faseAtual = GameManager.instance.faseAtual;
         _itensColetaveisList = levelManagerData.listaFases[faseAtual].listaColetaveis.Take(GameManager.instance.maximoColetavel).ToList();
     }
 
@@ -80,13 +81,15 @@ public class LevelManager : MonoBehaviour
         if (coletavelEncontrado != ColetavelName.Nenhum)
         {
             EncherCombo();
-            //GameManager.instance.showGameMessage($"Parabéns {EnumUtils.GetEnumDescription(coletavelEncontrado)} encontrado!");
+            //removendo o objeto coletado da lista de coletáveis da fase
             _itensColetaveisList.Remove(coletavelEncontrado);
 
+            //adiciona o item coletado na lista de itens coletados na fase
             itensColetadosList.Add(coletavelEncontrado);
 
             Destroy(coletavel);
 
+            //aqui determinamos o score para cada item coletado
             _score += levelManagerData.pontoBasePorItem;
 
             coletavelPanelController.criarListaDeItens();

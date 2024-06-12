@@ -487,8 +487,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ol\xE1, eu sou o gerente auxiliar regional de vendas da Jequiti, mas pode
-    me chamar de Goku."
+  m_text: "Ol\xE1, eu sou o texto do Prefab, se voc\xEA est\xE1 me vendo voc\xEA
+    est\xE1 editando o modelo geral de janela de di\xE1logo. Ou algu\xE9m me arrastou
+    pra uma scene e esqueceu de editar meu texto."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

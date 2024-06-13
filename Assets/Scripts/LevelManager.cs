@@ -62,7 +62,7 @@ public class LevelManager : MonoBehaviour
     public void Start()
     {
         GameManager.instance.setLevelManager(this);
-        //faseAtual = GameManager.instance.faseAtual;
+        faseAtual = GameManager.instance.faseAtual;
         _itensColetaveisList = levelManagerData.listaFases[faseAtual].listaColetaveis.Take(GameManager.instance.maximoColetavel).ToList();
     }
 

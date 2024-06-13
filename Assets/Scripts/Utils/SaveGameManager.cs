@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -38,6 +39,7 @@ public class SaveGameManager
 public class PlayerData
 {
     public bool jogoIniciado = false;
+    public DateTime startDate = DateTime.Now;
     public string name = "Jogador";
     public float musicVolume = 1.0f;
     public bool muted = false;

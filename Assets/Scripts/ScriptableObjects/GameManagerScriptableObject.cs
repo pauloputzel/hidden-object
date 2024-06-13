@@ -9,4 +9,6 @@ public class GameManagerScriptableObject : ScriptableObject
     //Tempo de exibição de mensagem de jogo em segundos 
     public float showGameMessageSeconds = 2.3f;
 
+    public float escreverLetraDeDialogoACadaXSegundos = 0.06f;
+
 }

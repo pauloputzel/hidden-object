@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class GameManager : MonoBehaviour
 {
@@ -87,13 +89,61 @@ public class GameManager : MonoBehaviour
         get => _levelAtual;
         set
         {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == value);
+            if (levelSelecionado != null) _faseAtual = levelSelecionado.ultimaFaseConcluida;
             _levelAtual = value;
+        }
+    }
+
+    public int ultimaFaseConcluida
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            if (levelSelecionado != null) return levelSelecionado.ultimaFaseConcluida;
+            return 0;
+        }
+    }
+
+    public float levelScore
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            float scoreLevelTotal = 0f;
+            if (levelSelecionado != null) levelSelecionado.faseDataList.ForEach(y => scoreLevelTotal += y.score);
+            return scoreLevelTotal;
+        }
+    }
+
+    public float faseScore
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            if (levelSelecionado == null) return 0f;
+            if (levelSelecionado.faseDataList.ElementAtOrDefault(_faseAtual) != null)
+            {
+                return levelSelecionado.faseDataList[_faseAtual].score;
+            }
+
+            return 0f;
         }
     }
 
     public int faseAtual
     {
-        get =>  _faseAtual;
+        get => _faseAtual;
+    }
+
+    public String startDate
+    {
+        get => saveGameManager.playerData.startDate.ToString("dd/MM/yyyy HH:mm:ss");
+    }
+
+    public float writeLetterSeconds
+    {
+        get => gameManagerData.escreverLetraDeDialogoACadaXSegundos;
     }
 
     //Propriedade jogoIniciado que define quando um jogo já foi salvo com informações relevantes para continuar a gameplay
@@ -241,23 +291,23 @@ public class GameManager : MonoBehaviour
 
         if (levelData == null)
         {
+
             levelData = new LevelData();
             levelData.name = nome;
-            saveGameManager.playerData.levelDataList.Add(levelData);
         }
 
-        //saveGameManager.playerData.itensColetados.Concat(itensColetados);
+        FaseData fase = new FaseData();
+        fase.name = $"{nome}_{faseAtual}";
+        fase.itensColetados = itensColetados;
+        fase.score = score;
 
-        levelData.ultimaFaseConcluida = faseAtual;
-        //levelData.score += score;
+        levelData.faseDataList.Add(fase);
+        levelData.ultimaFaseConcluida = faseAtual + 1;
+        saveGameManager.playerData.levelDataList.Add(levelData);
 
         saveGameManager.SaveGame();
     }
 
-    public float GetLevelScore()
-    {
-        return levelManager.score;
-    }
     public void saveGame()
     {
         saveGameManager.SaveGame();

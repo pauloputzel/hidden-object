@@ -41,8 +41,17 @@ TagManager:
   - name: Background
     uniqueID: 2759654629
     locked: 0
+  - name: Cena
+    uniqueID: 1540305371
+    locked: 0
   - name: Foreground
     uniqueID: 3837819803
+    locked: 0
+  - name: HUD
+    uniqueID: 1800569379
+    locked: 0
+  - name: Coletando
+    uniqueID: 3361117647
     locked: 0
   - name: Default
     uniqueID: 0

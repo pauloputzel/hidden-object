@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -12,6 +13,14 @@ public class SaveGameManager
         LoadGame();
     }
 
+    public void NewGame()
+    {
+        playerData = new PlayerData();
+        string playerDataJson = JsonUtility.ToJson(playerData);
+        System.IO.File.WriteAllText(playerDataPath, playerDataJson);
+        Debug.Log($"Jogo salvo em: {playerDataPath}");
+    }
+
     public void LoadGame()
     {
         try
@@ -21,8 +30,8 @@ public class SaveGameManager
 
         } catch (FileNotFoundException)
         {
-            Debug.Log($"Arquivo de save não encontrado em: ${playerDataPath}");
-            SaveGame();
+            Debug.Log($"Criando novo savegame em: ${playerDataPath}");
+            NewGame();
         }
     }
 
@@ -38,6 +47,7 @@ public class SaveGameManager
 public class PlayerData
 {
     public bool jogoIniciado = false;
+    public DateTime startDate = DateTime.Now;
     public string name = "Jogador";
     public float musicVolume = 1.0f;
     public bool muted = false;
@@ -48,14 +58,15 @@ public class PlayerData
 public class LevelData
 {
     public string name;
-    public float score=0;
-    public List<ColetavelData> itensColetadosList = new List<ColetavelData>();
-    public List<ColetavelData> itensColetaveisList = new List<ColetavelData>();
+    public int ultimaFaseConcluida = 0;
+    public List<FaseData> faseDataList = new List<FaseData>();
 }
 
 [System.Serializable]
-public class ColetavelData
+public class FaseData
 {
-    public int indiceNaListaOriginal;
-    public ColetavelName nome;
+    public string name;
+    public float score = 0;
+    public List<ColetavelName> itensColetados = new List<ColetavelName>();
 }
+

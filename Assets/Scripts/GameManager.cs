@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,8 +11,58 @@ public class GameManager : MonoBehaviour
     //Usada para armazenar a instância atual de GameManager
     //Permitindo acesso em outras classes apenas usando GameManager.instance
     public static GameManager instance;
-    public float contador_timer = 90;
-    public float pontoporitem = 5000;
+
+    public GameManagerScriptableObject gameManagerData;
+
+    //Tempo base de duração de um nível em segundos
+    public float contadorTimerSegundos
+    {
+        get => levelManager ? levelManager.contadorSegundos : 90f;
+        set {
+            if (levelManager)
+            {
+                levelManager.contadorSegundos = value;
+            }
+        }
+    }
+
+    //Pontuação base de um item coletado
+    public float pontoBasePorItem
+    {
+        get => levelManager ? levelManager.pontoBasePorItem : 5000f;
+    }
+
+    //Quantidade máxima de coletáveis que serão exibidos
+    public int maximoColetavel
+    {
+        get => levelManager ? levelManager.maximoColetavel : 9;
+    }
+
+    public float tempoDuracaoColetaItemSegundos
+    {
+        get => gameManagerData.tempoDuracaoColetaItemSegundos;
+    }
+
+    public List<ColetavelName> listaItensColetaveis
+    {
+        get => levelManager ? levelManager.listaItensColetaveis : null;
+    }
+
+    //Tempo de exibição de load de jogo em segundos 
+    public float tempoMinimoLoadSegundos
+    {
+        get => gameManagerData.tempoMinimoLoadSegundos;
+        set => gameManagerData.tempoMinimoLoadSegundos = value;
+
+    }
+
+    //Tempo de exibição de mensagem de jogo em segundos 
+    public float showGameMessageSeconds
+    {
+        get => gameManagerData.showGameMessageSeconds;
+        set => gameManagerData.showGameMessageSeconds = value;
+
+    }
 
     //Estas são as propriedades do GameManager
     //Propriedades funcionam como atalhos para acessar e manipular informações
@@ -25,6 +77,78 @@ public class GameManager : MonoBehaviour
             saveGameManager.playerData.name = value;
             saveGameManager.SaveGame();
         }
+    }
+
+    public string scoreTotal
+    {
+        get
+        {
+            float scoreT = 0f;
+            saveGameManager.playerData.levelDataList.ForEach(x => x.faseDataList.ForEach(y => scoreT += y.score ));
+            return scoreT.ToString();
+        }
+    }
+
+    public string levelAtual
+    {
+        get => _levelAtual;
+        set
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == value);
+            if (levelSelecionado != null) _faseAtual = levelSelecionado.ultimaFaseConcluida;
+            _levelAtual = value;
+        }
+    }
+
+    public int ultimaFaseConcluida
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            if (levelSelecionado != null) return levelSelecionado.ultimaFaseConcluida;
+            return 0;
+        }
+    }
+
+    public float levelScore
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            float scoreLevelTotal = 0f;
+            if (levelSelecionado != null) levelSelecionado.faseDataList.ForEach(y => scoreLevelTotal += y.score);
+            return scoreLevelTotal;
+        }
+    }
+
+    public float faseScore
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            if (levelSelecionado == null) return 0f;
+            if (levelSelecionado.faseDataList.ElementAtOrDefault(_faseAtual) != null)
+            {
+                return levelSelecionado.faseDataList[_faseAtual].score;
+            }
+
+            return 0f;
+        }
+    }
+
+    public int faseAtual
+    {
+        get => _faseAtual;
+    }
+
+    public String startDate
+    {
+        get => saveGameManager.playerData.startDate.ToString("dd/MM/yyyy HH:mm:ss");
+    }
+
+    public float writeLetterSeconds
+    {
+        get => gameManagerData.escreverLetraDeDialogoACadaXSegundos;
     }
 
     //Propriedade jogoIniciado que define quando um jogo já foi salvo com informações relevantes para continuar a gameplay
@@ -67,13 +191,12 @@ public class GameManager : MonoBehaviour
             saveGameManager.playerData.muted = value;
             saveGameManager.SaveGame();
         }
-    } 
+    }
 
-    //Tempo de exibição de mensagem de jogo em segundos 
-    public float showGameMessageSeconds = 2.3f;
-
-    //Quantidade máxima de coletáveis que serão exibidos
-    public int maximoColetavel;
+    public string nextSceneToLoad
+    {
+        get => sceneNameToLoad;
+    }
 
     //Componente do Gameobject GameManager para controle do muted
     private AudioListener mAudioListener;
@@ -93,6 +216,11 @@ public class GameManager : MonoBehaviour
     //Ao iniciar uma scene onde exista um GameObject LevelManager
     //este irá armazenar sua referência aqui
     private LevelManager levelManager;
+
+    private string sceneNameToLoad = "MenuScene";
+
+    private string _levelAtual = "";
+    private int _faseAtual = 0;
 
     //Ao iniciar um GameObject adicionado na scene
     public void Start()
@@ -150,43 +278,48 @@ public class GameManager : MonoBehaviour
 
     public bool itemEstaNaListaDeColetaveis(ColetavelName nomeColetavel)
     {
-        return getLevelProximosColetaveisList().Contains(nomeColetavel);
+        if (saveGameManager.playerData.levelDataList.Count == 0) return false;
+
+        return saveGameManager.playerData.levelDataList.Exists(x => x.faseDataList.Exists(x => x.itensColetados.Contains(nomeColetavel)));
     }
 
-    //retorna a lista dos N máximos itens que o jogador pode coletar no momento
-    public List<ColetavelName> getLevelProximosColetaveisList()
-    {
-        return levelManager ? levelManager.getLevelProximosColetaveisList() : new List<ColetavelName>();
-    }
     public void LevelTimerUpdate(float time)
     {
-        levelManager.timer_left = time;
+        levelManager.timeLeft = time;
     }
     public void LevelTimeOut()
     {
        carregarScene("GameOverScene");
     }
 
-    public void SaveLevel(string nome, float score)
+    public void SaveLevel(string nome, List<ColetavelName> itensColetados, int faseAtual, float score)
     {
         LevelData levelData = saveGameManager.playerData.levelDataList.Find(x => x.name == nome);
 
         if (levelData == null)
         {
+
             levelData = new LevelData();
             levelData.name = nome;
-            saveGameManager.playerData.levelDataList.Add(levelData);
         }
-        
-        levelData.score += score;
+
+        FaseData fase = new FaseData();
+        fase.name = $"{nome}_{faseAtual}";
+        fase.itensColetados = itensColetados;
+        fase.score = score;
+
+        levelData.faseDataList.Add(fase);
+        levelData.ultimaFaseConcluida = faseAtual + 1;
+        saveGameManager.playerData.levelDataList.Add(levelData);
 
         saveGameManager.SaveGame();
     }
 
-    public float GetLevelScore()
+    public void newGame()
     {
-        return levelManager.score;
+        saveGameManager.NewGame();
     }
+
     public void saveGame()
     {
         saveGameManager.SaveGame();
@@ -205,7 +338,8 @@ public class GameManager : MonoBehaviour
 
     public void carregarScene(string nomeScene)
     {
-        SceneManager.LoadScene(nomeScene);
+        sceneNameToLoad = nomeScene;
+        SceneManager.LoadScene("LoadScene");
     }
 
     public void resetGame()

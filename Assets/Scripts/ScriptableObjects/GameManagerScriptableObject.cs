@@ -11,4 +11,6 @@ public class GameManagerScriptableObject : ScriptableObject
 
     public float escreverLetraDeDialogoACadaXSegundos = 0.06f;
 
+    public float tempoDuracaoColetaItemSegundos = 2f;
+
 }

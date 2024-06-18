@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
 
 public class LevelManager : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class LevelManager : MonoBehaviour
     public ColetavelPanelController coletavelPanelController;
     public TextMeshProUGUI scoreDisplayText;
     public ComboProgressBar comboProgressBar;
+    public GameObject canvas;
 
     //Tempo base de duração de um nível em segundos
     public float contadorSegundos
@@ -71,33 +75,19 @@ public class LevelManager : MonoBehaviour
         scoreDisplayText.text = _score.ToString();
     }
 
-    public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)
+    public void coletarItem(ColetavelName coletavelName, GameObject coletavel)
     {
 
-        //encontrando se o item esta entre a lista dos primeiros, Find busca o item para cada x (Coletavel) se o nome é o mesmo
-        ColetavelName coletavelEncontrado = _itensColetaveisList.Find(x => x == coletavelNome);
+        ColetavelName coletavelEncontrado = _itensColetaveisList.Find(x => x == coletavelName); //encontrando se o item esta entre a lista dos primeiros, Find busca o item para cada x (Coletavel) se o nome é o mesmo
 
-        //Se Find não encontrar o item coletavelEncontrado será "Nenhum"
-        if (coletavelEncontrado != ColetavelName.Nenhum)
-        {
-            EncherCombo();
-            //removendo o objeto coletado da lista de coletáveis da fase
-            _itensColetaveisList.Remove(coletavelEncontrado);
-
-            //adiciona o item coletado na lista de itens coletados na fase
-            itensColetadosList.Add(coletavelEncontrado);
-
-            Destroy(coletavel);
-
-            //aqui determinamos o score para cada item coletado
-            _score += levelManagerData.pontoBasePorItem;
-
-            coletavelPanelController.criarListaDeItens();
-
-        } else
-        {
+        if (coletavelEncontrado == ColetavelName.Nenhum) {
             EsvaziarCombo();
+            return; 
         }
+
+        EncherCombo();
+        IniciarAnimacaoDeColeta(coletavel, coletavelEncontrado);
+        CalcularScoreEMostrarTextPontosColetados();
 
         if (_itensColetaveisList.Count == 0)
         {
@@ -107,6 +97,13 @@ public class LevelManager : MonoBehaviour
 
             GameManager.instance.carregarScene("GameOverScene");
         }
+    }
+
+    private void EsvaziarCombo()
+    {
+        comboCheio = false;
+        qtdItensColetadosSemErrar = 0;
+        comboProgressBar.SetEmpty();
     }
 
     private void EncherCombo()
@@ -123,10 +120,36 @@ public class LevelManager : MonoBehaviour
         comboProgressBar.UpdateValue(percent);
     }
 
-    private void EsvaziarCombo()
+    private void IniciarAnimacaoDeColeta(GameObject coletavel, ColetavelName coletavelEncontrado)
     {
-        comboCheio = false;
-        qtdItensColetadosSemErrar = 0;
-        comboProgressBar.SetEmpty();
+
+        GameObject textoNaLista = coletavelPanelController.encontrarTextDaLista(coletavelEncontrado);
+
+        //Vector3 trgtPos = Camera.main.ScreenToWorldPoint(.position);
+        coletavel.transform.SetParent(canvas.transform);
+        coletavel.GetComponent<SpriteRenderer>().sortingLayerName = "Coletando";
+
+        coletavel.GetComponent<ColetavelController>().VoarPara(textoNaLista.transform, () => {
+            _itensColetaveisList.Remove(coletavelEncontrado); //removendo o objeto coletado da lista de coletáveis da fase
+            itensColetadosList.Add(coletavelEncontrado); //adiciona o item coletado na lista de itens coletados na fase
+            coletavelPanelController.criarListaDeItens();
+            Destroy(coletavel);
+        }); 
+
+    }
+
+    private void CalcularScoreEMostrarTextPontosColetados()
+    {
+        //Calcular Score
+        float scoreItemColetado = levelManagerData.pontoBasePorItem;
+        if (comboCheio) scoreItemColetado *= 2;
+        _score += scoreItemColetado;
+        levelManagerData.textoAnimadoPontosColetadosPrefab.GetComponent<TextMeshProUGUI>().text = scoreItemColetado.ToString();
+
+        //Mostrar Pontos na Tela
+        GameObject textoPontosColetados = Instantiate(levelManagerData.textoAnimadoPontosColetadosPrefab, canvas.transform);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        worldPosition.z = 100f;
+        textoPontosColetados.GetComponent<RectTransform>().position = worldPosition;
     }
 }

@@ -8,6 +8,8 @@ public class ColetavelPanelController : MonoBehaviour
 
     public GameObject content;
 
+    private Dictionary<ColetavelName, GameObject> itensMostrados = new Dictionary<ColetavelName, GameObject>();
+
     void Start()
     {
         criarListaDeItens();
@@ -15,6 +17,8 @@ public class ColetavelPanelController : MonoBehaviour
 
     public void criarListaDeItens()
     {
+        itensMostrados.Clear();
+
         foreach (Transform child in content.transform)
         {
             Destroy(child.gameObject);
@@ -24,6 +28,14 @@ public class ColetavelPanelController : MonoBehaviour
         {
             GameObject createdObject = Instantiate(prefabItemColetavel, content.transform);
             createdObject.GetComponent<TextMeshProUGUI>().text = EnumUtils.GetEnumDescription(coletavelName);
+            itensMostrados.Add(coletavelName, createdObject);
         }
+    }
+
+    public GameObject encontrarTextDaLista(ColetavelName coletavelName)
+    {
+        if (itensMostrados.ContainsKey(coletavelName)) return itensMostrados[coletavelName];
+
+        return null;
     }
 }

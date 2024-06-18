@@ -50,6 +50,9 @@ TagManager:
   - name: HUD
     uniqueID: 1800569379
     locked: 0
+  - name: Coletando
+    uniqueID: 3361117647
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

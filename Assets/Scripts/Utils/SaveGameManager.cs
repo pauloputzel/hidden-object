@@ -13,6 +13,14 @@ public class SaveGameManager
         LoadGame();
     }
 
+    public void NewGame()
+    {
+        playerData = new PlayerData();
+        string playerDataJson = JsonUtility.ToJson(playerData);
+        System.IO.File.WriteAllText(playerDataPath, playerDataJson);
+        Debug.Log($"Jogo salvo em: {playerDataPath}");
+    }
+
     public void LoadGame()
     {
         try
@@ -23,7 +31,7 @@ public class SaveGameManager
         } catch (FileNotFoundException)
         {
             Debug.Log($"Criando novo savegame em: ${playerDataPath}");
-            SaveGame();
+            NewGame();
         }
     }
 

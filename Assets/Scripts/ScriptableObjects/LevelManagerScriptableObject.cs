@@ -25,4 +25,6 @@ public class LevelManagerScriptableObject : ScriptableObject
 
     //Quantidade de itens necessários coletar para encher o combo
     public int quantidadeItensParaComboCheio = 3;
+
+    public GameObject textoAnimadoPontosColetadosPrefab;
 }

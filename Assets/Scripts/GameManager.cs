@@ -38,6 +38,11 @@ public class GameManager : MonoBehaviour
         get => levelManager ? levelManager.maximoColetavel : 9;
     }
 
+    public float tempoDuracaoColetaItemSegundos
+    {
+        get => gameManagerData.tempoDuracaoColetaItemSegundos;
+    }
+
     public List<ColetavelName> listaItensColetaveis
     {
         get => levelManager ? levelManager.listaItensColetaveis : null;
@@ -273,7 +278,9 @@ public class GameManager : MonoBehaviour
 
     public bool itemEstaNaListaDeColetaveis(ColetavelName nomeColetavel)
     {
-        return levelManager ? levelManager.listaItensColetaveis.Contains(nomeColetavel) : false;
+        if (saveGameManager.playerData.levelDataList.Count == 0) return false;
+
+        return saveGameManager.playerData.levelDataList.Exists(x => x.faseDataList.Exists(x => x.itensColetados.Contains(nomeColetavel)));
     }
 
     public void LevelTimerUpdate(float time)
@@ -306,6 +313,11 @@ public class GameManager : MonoBehaviour
         saveGameManager.playerData.levelDataList.Add(levelData);
 
         saveGameManager.SaveGame();
+    }
+
+    public void newGame()
+    {
+        saveGameManager.NewGame();
     }
 
     public void saveGame()

@@ -10,6 +10,8 @@ public class LocalController : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (GameManager.instance.jogoPausado) return;
+
         cenarioMenu.mapaNomeText.text = nomeLocal;
         GameManager.instance.levelAtual = nomeLevelScene;
         cenarioMenu.fasesConcluidasText.text = $"FASES CONCLUÍDAS: {GameManager.instance.ultimaFaseConcluida}";

@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -15,24 +14,22 @@ public class LevelManager : MonoBehaviour
     public TextMeshProUGUI scoreDisplayText;
     public ComboProgressBar comboProgressBar;
     public GameObject canvas;
+    public DetalhesColetavelPanelController detalhesColetavelPanel;
 
-    //Tempo base de duração de um nível em segundos
-    public float contadorSegundos
+    public float contadorSegundos                           //Tempo base de duração de um nível em segundos
     {
         get => levelManagerData.contadorSegundos;
         set => levelManagerData.contadorSegundos = value;
     }
 
-    //Pontuação base de um item coletado
-    public float pontoBasePorItem
+    public float pontoBasePorItem                           //Pontuação base de um item coletado
     {
         get => levelManagerData.pontoBasePorItem;
         set => levelManagerData.pontoBasePorItem = value;
 
     }
 
-    //Quantidade máxima de coletáveis que serão exibidos
-    public int maximoColetavel
+    public int maximoColetavel                              //Quantidade máxima de coletáveis que serão exibidos
     {
         get => levelManagerData.maximoColetavel;
         set => levelManagerData.maximoColetavel = value;
@@ -68,6 +65,7 @@ public class LevelManager : MonoBehaviour
         GameManager.instance.setLevelManager(this);
         faseAtual = GameManager.instance.faseAtual;
         _itensColetaveisList = levelManagerData.listaFases[faseAtual].listaColetaveis.Take(GameManager.instance.maximoColetavel).ToList();
+        GameManager.instance.jogoPausado = false;
     }
 
     public void Update()
@@ -77,8 +75,7 @@ public class LevelManager : MonoBehaviour
 
     public void coletarItem(ColetavelName coletavelName, GameObject coletavel)
     {
-
-        ColetavelName coletavelEncontrado = _itensColetaveisList.Find(x => x == coletavelName); //encontrando se o item esta entre a lista dos primeiros, Find busca o item para cada x (Coletavel) se o nome é o mesmo
+        ColetavelName coletavelEncontrado = _itensColetaveisList.Find(x => x == coletavelName); //verificando se o item esta entre a lista dos primeiros, Find busca o item para cada x (Coletavel) se o nome é o mesmo
 
         if (coletavelEncontrado == ColetavelName.Nenhum) {
             EsvaziarCombo();
@@ -92,9 +89,7 @@ public class LevelManager : MonoBehaviour
         if (_itensColetaveisList.Count == 0)
         {
             _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
-
             GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, itensColetadosList, faseAtual, _score);
-
             GameManager.instance.carregarScene("GameOverScene");
         }
     }
@@ -122,20 +117,20 @@ public class LevelManager : MonoBehaviour
 
     private void IniciarAnimacaoDeColeta(GameObject coletavel, ColetavelName coletavelEncontrado)
     {
-
         GameObject textoNaLista = coletavelPanelController.encontrarTextDaLista(coletavelEncontrado);
+        Image coletavelImage = detalhesColetavelPanel.coletavelImage;
 
-        //Vector3 trgtPos = Camera.main.ScreenToWorldPoint(.position);
         coletavel.transform.SetParent(canvas.transform);
         coletavel.GetComponent<SpriteRenderer>().sortingLayerName = "Coletando";
 
-        coletavel.GetComponent<ColetavelController>().VoarPara(textoNaLista.transform, () => {
+        coletavel.GetComponent<ColetavelController>().ExecutarAnimacao(detalhesColetavelPanel, coletavelImage.transform, textoNaLista.transform, () => {
             _itensColetaveisList.Remove(coletavelEncontrado); //removendo o objeto coletado da lista de coletáveis da fase
             itensColetadosList.Add(coletavelEncontrado); //adiciona o item coletado na lista de itens coletados na fase
-            coletavelPanelController.criarListaDeItens();
-            Destroy(coletavel);
-        }); 
+            //coletavelPanelController.criarListaDeItens();
 
+            textoNaLista.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
+            Destroy(coletavel);
+        });
     }
 
     private void CalcularScoreEMostrarTextPontosColetados()

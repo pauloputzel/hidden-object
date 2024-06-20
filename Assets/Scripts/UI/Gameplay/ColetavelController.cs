@@ -1,15 +1,24 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class ColetavelController : MonoBehaviour
 {
     public ColetavelName nome;
-
+    public bool coletavelDaDengue = false;
+    public String mensagemDaDengue;
     public AnimationCurve curve;
+    private float minScaleAnim = 0.3f;
 
-    private Transform targetTransform;
+    private SpriteRenderer spriteRenderer;
+    private MaterialPropertyBlock block;
+    private Transform targetTextTransform;
+    private Transform targetDetalhesTransform;
+    private DetalhesColetavelPanelController detalhesPanel;
     private float startTime;
     private Vector3 startPosition;
+    private Vector3 startScale;
+    private bool detalhesAnimExecutando = false;
     private bool coletando = false;
     private bool chegouNoDestino = false;
     private Action terminouDeVoar;
@@ -17,10 +26,13 @@ public class ColetavelController : MonoBehaviour
     private void Start()
     {
         if (GameManager.instance.itemEstaNaListaDeColetaveis(nome)) Destroy(gameObject);
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        block = new MaterialPropertyBlock();
     }
     void Update()
     {
-        if (coletando) this.voaProAlvo();
+        if (detalhesAnimExecutando) this.voaProAlvo(targetDetalhesTransform);
+        if (coletando) this.voaProAlvo(targetTextTransform);
         if (chegouNoDestino) this.terminouDeVoar();
     }
 
@@ -31,42 +43,92 @@ public class ColetavelController : MonoBehaviour
         Debug.Log(hitInfo.collider.gameObject.name);
         if (hitInfo && gameObject == hitInfo.collider.gameObject)
         {
-            coletando = true;
             GameManager.instance.coletarItem(nome, gameObject);
         }
     }
 
-    public void VoarPara(Transform targetPosition, Action terminouDeVoar)
+    public void ExecutarAnimacao(DetalhesColetavelPanelController detalhesPanel, Transform targetDetalhesTransform, Transform targetTextTransform, Action terminouAction)
     {
-        this.terminouDeVoar = terminouDeVoar;
-        this.targetTransform = targetPosition;
+        spriteRenderer.GetPropertyBlock(block);
+        block.SetColor("_Color", new Color(1024, 847, 0, 1));
+        block.SetFloat("_Thick", 3f);
+        spriteRenderer.SetPropertyBlock(block);
+
+        if (coletavelDaDengue) this.targetDetalhesTransform = targetDetalhesTransform;
+        if (coletavelDaDengue) this.detalhesPanel = detalhesPanel;
+
+        this.terminouDeVoar = terminouAction;
+        this.targetTextTransform = targetTextTransform;
+
         Vector3 newPositionZ = transform.position;
         newPositionZ.z = 100f;
         transform.position = newPositionZ;
 
-        startTime = Time.time;
-        startPosition = transform.position;
+        ResetVoarSettings();
+
+        if (coletavelDaDengue)
+        {
+            detalhesAnimExecutando = true;
+
+        }
+        else
+        {
+            coletando = true;
+        }
     }
 
-    private void voaProAlvo()
+    private void ResetVoarSettings()
     {
-        // Calculate how far along the curve we should be
-        float timeFraction = (Time.time - startTime) / GameManager.instance.tempoDuracaoColetaItemSegundos;
+        startTime = Time.time;
+        startPosition = transform.position;
+        startScale = transform.localScale;
+    }
 
-        // Ensure timeFraction stays between 0 and 1
+    private void voaProAlvo(Transform target)
+    {
+        float timeFraction = (Time.time - startTime) / GameManager.instance.tempoDuracaoColetaItemSegundos;
         timeFraction = Mathf.Clamp01(timeFraction);
 
-        // Use the curve to adjust the fraction
         float curveValue = curve.Evaluate(timeFraction);
 
-        // Interpolate between the start position and target position
-        transform.position = Vector3.Lerp(startPosition, targetTransform.position, curveValue);
+        transform.position = Vector3.Lerp(startPosition, target.position, curveValue);
+        if (coletando) transform.localScale = Vector3.Lerp(startScale, startScale * minScaleAnim, curveValue);
 
-        // Check if the movement is complete
         if (timeFraction == 1.0f)
         {
-            coletando = false;
-            chegouNoDestino = true;
+            if (coletando)
+            {
+                coletando = false;
+                chegouNoDestino = true;
+            }
+
+            if (detalhesAnimExecutando && coletavelDaDengue)
+            {
+                detalhesAnimExecutando = false;
+                carregarAnimacaoParaDetalhesPanel();
+            }
         }
+    }
+
+    private void carregarAnimacaoParaDetalhesPanel()
+    {
+        detalhesPanel.coletavelImage.sprite = spriteRenderer.sprite;
+        detalhesPanel.coletavelImage.SetNativeSize();
+
+        detalhesPanel.coletavelImage.rectTransform.sizeDelta = new Vector2(
+            detalhesPanel.coletavelImage.rectTransform.sizeDelta.x * transform.lossyScale.x,
+            detalhesPanel.coletavelImage.rectTransform.sizeDelta.y * transform.lossyScale.y);
+
+        detalhesPanel.coletavelNomeText.text = EnumUtils.GetEnumDescription(nome);
+        detalhesPanel.detalhesColetavel.text = mensagemDaDengue;
+        detalhesPanel.continuarButton.onClick.RemoveAllListeners();
+        detalhesPanel.continuarButton.onClick.AddListener(() =>
+        {
+            ResetVoarSettings();
+            coletando = true;
+            detalhesPanel.gameObject.SetActive(false);
+        });
+
+        detalhesPanel.gameObject.SetActive(true);
     }
 }

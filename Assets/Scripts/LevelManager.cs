@@ -15,6 +15,8 @@ public class LevelManager : MonoBehaviour
     public ComboProgressBar comboProgressBar;
     public GameObject canvas;
     public DetalhesColetavelPanelController detalhesColetavelPanel;
+    public GameOverController timeoutDisplayController;
+    public GameOverController phaseClearDisplayController;
 
     public float contadorSegundos                           //Tempo base de duração de um nível em segundos
     {
@@ -82,16 +84,9 @@ public class LevelManager : MonoBehaviour
             return; 
         }
 
-        EncherCombo();
+        EncherCombo(); //removendo o objeto coletado da lista de coletáveis da fase
         IniciarAnimacaoDeColeta(coletavel, coletavelEncontrado);
         CalcularScoreEMostrarTextPontosColetados();
-
-        if (_itensColetaveisList.Count == 0)
-        {
-            _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
-            GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, itensColetadosList, faseAtual, _score);
-            GameManager.instance.carregarScene("GameOverScene");
-        }
     }
 
     private void EsvaziarCombo()
@@ -124,12 +119,26 @@ public class LevelManager : MonoBehaviour
         coletavel.GetComponent<SpriteRenderer>().sortingLayerName = "Coletando";
 
         coletavel.GetComponent<ColetavelController>().ExecutarAnimacao(detalhesColetavelPanel, coletavelImage.transform, textoNaLista.transform, () => {
-            _itensColetaveisList.Remove(coletavelEncontrado); //removendo o objeto coletado da lista de coletáveis da fase
-            itensColetadosList.Add(coletavelEncontrado); //adiciona o item coletado na lista de itens coletados na fase
+            itensColetadosList.Add(coletavelEncontrado);
+            _itensColetaveisList.Remove(coletavelEncontrado);
             //coletavelPanelController.criarListaDeItens();
 
             textoNaLista.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
             Destroy(coletavel);
+
+            if (_itensColetaveisList.Count == 0)
+            {
+                GameManager.instance.jogoPausado = true;
+                _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
+                GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, itensColetadosList, faseAtual, _score);
+
+                phaseClearDisplayController.scoreDisplay.text = $"SCORE: {_score}";
+                phaseClearDisplayController.continuarButton.onClick.AddListener(() => {
+                    GameManager.instance.jogoPausado = false;
+                    GameManager.instance.carregarScene("MapaScene");
+                });
+                phaseClearDisplayController.gameObject.SetActive(true);
+            }
         });
     }
 

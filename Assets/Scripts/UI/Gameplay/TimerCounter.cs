@@ -21,11 +21,11 @@ public class TimerCounter : MonoBehaviour
         if (timerSegundos < 0)
         {
             GameManager.instance.LevelTimeOut();
-            return;
+        } else
+        {
+            updateTextValue();
+            GameManager.instance.LevelTimerUpdate(timerSegundos);
         }
-
-        updateTextValue();
-        GameManager.instance.LevelTimerUpdate(timerSegundos);
     }
 
     private void updateTextValue()

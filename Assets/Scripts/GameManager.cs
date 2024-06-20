@@ -229,7 +229,13 @@ public class GameManager : MonoBehaviour
     }
     public void LevelTimeOut()
     {
-       carregarScene("GameOverScene");
+        jogoPausado = true;
+        levelManager.timeoutDisplayController.scoreDisplay.text = $"SCORE: {levelManager.score}";
+        levelManager.timeoutDisplayController.continuarButton.onClick.AddListener(() => {
+            jogoPausado = false;
+            carregarScene("MapaScene");
+        });
+        levelManager.timeoutDisplayController.gameObject.SetActive(true);
     }
 
     public void SaveLevel(string nome, List<ColetavelName> itensColetados, int faseAtual, float score)

@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 3153922664151397782}
   - component: {fileID: 8313583553148923588}
   - component: {fileID: 3742422756608914117}
+  - component: {fileID: 1343813168248554113}
   m_Layer: 5
   m_Name: OpcoesButton
   m_TagString: Untagged
@@ -208,3 +209,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &1343813168248554113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7657911286761964824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0107e7bd6053fcf48a9645aea01aaf64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

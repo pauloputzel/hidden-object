@@ -9,25 +9,30 @@ public class TimerCounter : MonoBehaviour
     {
         timerSegundos = GameManager.instance.contadorTimerSegundos;
         textmesh = GetComponent<TextMeshProUGUI>();
+        updateTextValue();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.jogoPausado) return;
+
         timerSegundos -= Time.deltaTime;
 
         if (timerSegundos < 0)
         {
             GameManager.instance.LevelTimeOut();
-        }
-        else
+        } else
         {
-            float timeaux = timerSegundos / 60;
-            float minutos = Mathf.Floor(timeaux);
-            float segundos = ((timeaux - minutos) * 60);
-            textmesh.text = $"{minutos:00}:{segundos:00}";
+            updateTextValue();
             GameManager.instance.LevelTimerUpdate(timerSegundos);
         }
+    }
 
+    private void updateTextValue()
+    {
+        float timeaux = timerSegundos / 60;
+        float minutos = Mathf.Floor(timeaux);
+        float segundos = ((timeaux - minutos) * 60);
+        textmesh.text = $"{minutos:00}:{segundos:00}";
     }
 }

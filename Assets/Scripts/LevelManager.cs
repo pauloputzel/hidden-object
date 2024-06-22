@@ -115,6 +115,8 @@ public class LevelManager : MonoBehaviour
         GameObject textoNaLista = coletavelPanelController.encontrarTextDaLista(coletavelEncontrado);
         Image coletavelImage = detalhesColetavelPanel.coletavelImage;
 
+        textoNaLista.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
+
         coletavel.transform.SetParent(canvas.transform);
         coletavel.GetComponent<SpriteRenderer>().sortingLayerName = "Coletando";
 
@@ -122,7 +124,6 @@ public class LevelManager : MonoBehaviour
             itensColetadosList.Add(coletavelEncontrado);
             _itensColetaveisList.Remove(coletavelEncontrado);
 
-            textoNaLista.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
             Destroy(coletavel);
             coletavelPanelController.criarListaDeItens();
 

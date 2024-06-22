@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
         get => saveGameManager.playerData.muted;
         set
         {
-            mAudioListener.enabled = !value;                //A exclamação antes de value inverte a condição do bool que está recebendo Se GameManager.instance.muted = true então a propriedade enabled do componente de escuta recebe o oposto (false)
+            AudioListener.volume = value ? 0 : 1;                //A exclamação antes de value inverte a condição do bool que está recebendo Se GameManager.instance.muted = true então a propriedade enabled do componente de escuta recebe o oposto (false)
             saveGameManager.playerData.muted = value;       //armazena o valor na estrutura de dados e salva
             saveGameManager.SaveGame();
         }
@@ -179,7 +179,6 @@ public class GameManager : MonoBehaviour
         get => sceneNameToLoad;
     }
     
-    private AudioListener mAudioListener;                   //Componente do Gameobject GameManager para controle do muted
     private AudioSource mAudioSource;                       //Componente do Gameobject GameManager para controle de volume da música
     private GameMessageController gameMessage;              //Controle do GameObject GameMessage que foi pré adicionado na scene atual o GameMessage faz seu registro nesta propriedade 
     private SaveGameManager saveGameManager;                //Classe responsável por salvar o jogo o próprio GameManager cria um objeto dessa classe ao iniciar
@@ -197,13 +196,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        mAudioListener = GetComponent<AudioListener>();                 //registra componente de escuta de Audio no jogo
-        mAudioSource = GetComponent<AudioSource>();                     //registra componente de Musica do jogo
-        saveGameManager = new SaveGameManager();                        //inicia um novo Gerenciador de SaveGame o Gerenciador já busca pelo jogo salvo ao ser iniciado
-        mAudioSource.volume = saveGameManager.playerData.musicVolume;   //ajusta o volume do componente conforme salvo em arquivo
-        mAudioListener.enabled = !saveGameManager.playerData.muted;     //muta ou desmuta o jogo conforme salvo em arquivo
-        instance = this;                                                //armaezena esse próprio primeiro GameManager na variável instance assumindo o controle do jogo
-        DontDestroyOnLoad(gameObject);                                  //Configura esse GameObject para não ser destruído ao trocar de scene
+        mAudioSource = GetComponent<AudioSource>();                      //registra componente de Musica do jogo
+        saveGameManager = new SaveGameManager();                         //inicia um novo Gerenciador de SaveGame o Gerenciador já busca pelo jogo salvo ao ser iniciado
+        mAudioSource.volume = saveGameManager.playerData.musicVolume;    //ajusta o volume do componente conforme salvo em arquivo
+        muted = saveGameManager.playerData.muted;                        //muta ou desmuta o jogo conforme salvo em arquivo
+        instance = this;                                                 //armaezena esse próprio primeiro GameManager na variável instance assumindo o controle do jogo
+        DontDestroyOnLoad(gameObject);                                   //Configura esse GameObject para não ser destruído ao trocar de scene
     }
 
     public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)

@@ -120,6 +120,8 @@ public class LevelManager : MonoBehaviour
         coletavel.transform.SetParent(canvas.transform);
         coletavel.GetComponent<SpriteRenderer>().sortingLayerName = "Coletando";
 
+
+        //O código dentro desta indentação é executado somente no final da animação de coleta, atualmente isso ocorre quando o item chega ao encontro de seu nome na lista
         coletavel.GetComponent<ColetavelController>().ExecutarAnimacao(detalhesColetavelPanel, coletavelImage.transform, textoNaLista.transform, () => {
             itensColetadosList.Add(coletavelEncontrado);
             _itensColetaveisList.Remove(coletavelEncontrado);
@@ -129,18 +131,27 @@ public class LevelManager : MonoBehaviour
 
             if (_itensColetaveisList.Count == 0)
             {
-                GameManager.instance.jogoPausado = true;
-                _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
-                GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, itensColetadosList, faseAtual, _score);
-
-                phaseClearDisplayController.scoreDisplay.text = $"SCORE: {_score}";
-                phaseClearDisplayController.continuarButton.onClick.AddListener(() => {
-                    GameManager.instance.jogoPausado = false;
-                    GameManager.instance.carregarScene("MapaScene");
-                });
-                phaseClearDisplayController.gameObject.SetActive(true);
+                FaseConcluida();
             }
         });
+    }
+
+    private void FaseConcluida()
+    {
+        //calculando pontuação com base no tempo restante
+        GameManager.instance.jogoPausado = true;
+        _score += Mathf.Floor((levelManagerData.contadorSegundos - _timeLeft) * 10000);
+
+        //salvando fase como concluída
+        GameManager.instance.SaveLevel(SceneManager.GetActiveScene().name, itensColetadosList, faseAtual, _score);
+
+        //Exibindo panel de fase concluída
+        phaseClearDisplayController.scoreDisplay.text = $"Pontuação: {_score}";
+        phaseClearDisplayController.continuarButton.onClick.AddListener(() => {
+            GameManager.instance.jogoPausado = false;
+            GameManager.instance.carregarScene("MapaScene");
+        });
+        phaseClearDisplayController.gameObject.SetActive(true);
     }
 
     private void CalcularScoreEMostrarTextPontosColetados()

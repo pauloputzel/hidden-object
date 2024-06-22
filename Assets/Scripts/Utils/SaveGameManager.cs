@@ -18,7 +18,6 @@ public class SaveGameManager
         playerData = new PlayerData();
         string playerDataJson = JsonUtility.ToJson(playerData);
         System.IO.File.WriteAllText(playerDataPath, playerDataJson);
-        Debug.Log($"Jogo salvo em: {playerDataPath}");
     }
 
     public void LoadGame()
@@ -30,7 +29,6 @@ public class SaveGameManager
 
         } catch (FileNotFoundException)
         {
-            Debug.Log($"Criando novo savegame em: ${playerDataPath}");
             NewGame();
         }
     }
@@ -39,7 +37,6 @@ public class SaveGameManager
     {
         string playerDataJson = JsonUtility.ToJson(playerData);
         System.IO.File.WriteAllText(playerDataPath, playerDataJson);
-        Debug.Log($"Jogo salvo em: {playerDataPath}");
     }
 }
 

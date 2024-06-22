@@ -121,10 +121,10 @@ public class LevelManager : MonoBehaviour
         coletavel.GetComponent<ColetavelController>().ExecutarAnimacao(detalhesColetavelPanel, coletavelImage.transform, textoNaLista.transform, () => {
             itensColetadosList.Add(coletavelEncontrado);
             _itensColetaveisList.Remove(coletavelEncontrado);
-            //coletavelPanelController.criarListaDeItens();
 
             textoNaLista.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
             Destroy(coletavel);
+            coletavelPanelController.criarListaDeItens();
 
             if (_itensColetaveisList.Count == 0)
             {

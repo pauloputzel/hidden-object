@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameManagerScriptableObject gameManagerData;
+    public GameObject gameMessagePrefab;
 
     public bool jogoPausado
     {
@@ -18,11 +19,8 @@ public class GameManager : MonoBehaviour
     public float contadorTimerSegundos
     {
         get => levelManager ? levelManager.contadorSegundos : 90f;
-        set {
-            if (levelManager)
-            {
-                levelManager.contadorSegundos = value;
-            }
+        set { 
+            if (levelManager) levelManager.contadorSegundos = value; 
         }
     }
 
@@ -50,14 +48,12 @@ public class GameManager : MonoBehaviour
     {
         get => gameManagerData.tempoMinimoLoadSegundos;
         set => gameManagerData.tempoMinimoLoadSegundos = value;
-
     }
 
     public float showGameMessageSeconds
     {
         get => gameManagerData.showGameMessageSeconds;
         set => gameManagerData.showGameMessageSeconds = value;
-
     }
 
     public string nomePersonagem
@@ -180,7 +176,6 @@ public class GameManager : MonoBehaviour
     }
     
     private AudioSource mAudioSource;                       //Componente do Gameobject GameManager para controle de volume da música
-    private GameMessageController gameMessage;              //Controle do GameObject GameMessage que foi pré adicionado na scene atual o GameMessage faz seu registro nesta propriedade 
     private SaveGameManager saveGameManager;                //Classe responsável por salvar o jogo o próprio GameManager cria um objeto dessa classe ao iniciar
     private LevelManager levelManager;                      //Gerenciador de níveis Ao iniciar uma scene onde exista um GameObject LevelManager este irá armazenar sua referência aqui
     private string sceneNameToLoad = "MenuScene";
@@ -268,15 +263,17 @@ public class GameManager : MonoBehaviour
         saveGameManager.SaveGame();
     }
 
-    public void setGameMessageController(GameMessageController gameMessage)
-    {
-        this.gameMessage = gameMessage;
-        this.gameMessage.displaySeconds = showGameMessageSeconds;
-    }
-
     public void showGameMessage(string message)
     {
-        if (gameMessage) gameMessage.showMessage(message);
+        GameMessageController gameMsgCtl = Instantiate(gameMessagePrefab).GetComponent<GameMessageController>();
+        gameMsgCtl.showMessage(message);
+    }
+
+    public void showGameMessage(string message, float tempoSeg, Transform canvasTransform, RectTransform rect)
+    {
+        GameMessageController gameMsgCtl = Instantiate(gameMessagePrefab, canvasTransform).GetComponent<GameMessageController>();
+        gameMsgCtl.GetComponent<RectTransform>().position = rect.position;
+        gameMsgCtl.showMessage(message, tempoSeg);
     }
 
     public void carregarScene(string nomeScene)

@@ -15,7 +15,12 @@ public class SaveGameManager
 
     public void NewGame()
     {
-        playerData = new PlayerData();
+        PlayerData newPlayerData = new PlayerData();
+
+        if (playerData?.musicVolume != null) newPlayerData.musicVolume = playerData.musicVolume; 
+        if (playerData?.muted != null) newPlayerData.muted = playerData.muted;
+        
+        playerData = newPlayerData;
         string playerDataJson = JsonUtility.ToJson(playerData);
         System.IO.File.WriteAllText(playerDataPath, playerDataJson);
     }

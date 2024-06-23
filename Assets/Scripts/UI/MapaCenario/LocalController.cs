@@ -19,6 +19,6 @@ public class LocalController : MonoBehaviour
 
         cenarioMenu.continuarButton.onClick.RemoveAllListeners();
         cenarioMenu.continuarButton.onClick.AddListener(() => { GameManager.instance.carregarScene(nomeLevelScene); });
-        cenarioMenu.gameObject.SetActive(true);
+        cenarioMenu.SetActive(true);
     }
 }

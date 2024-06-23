@@ -5,12 +5,12 @@ using UnityEngine.Windows;
 
 public class DialogWriter : MonoBehaviour
 {
-    private float writeLetterSeconds = 0.5f;
     private AudioSource m_AudioSource;
     private TextMeshProUGUI m_TextMeshProUGUI;
     private string fullText;
     private int charCount;
     private float timer;
+    private bool escreveTudo = false;
 
     private Dictionary<string, string> replaces = new Dictionary<string, string>
     {   //Variáveis do texto devem ser escritas no Text com chaves ex {JOGADOR_NOME}
@@ -24,30 +24,30 @@ public class DialogWriter : MonoBehaviour
     {
         m_AudioSource = GetComponent<AudioSource>();
         m_TextMeshProUGUI = GetComponent<TextMeshProUGUI>();
-        fullText = StringReplacer.Replace(m_TextMeshProUGUI.text, replaces);
-        writeLetterSeconds = GameManager.instance.writeLetterSeconds;
-        StartDialogWriter();
-    }
-
-    void OnEnable()
-    {
-       StartDialogWriter();
     }
 
     void Update()
     {
-        if (charCount < fullText.Length && (timer < (Time.time)))
+        if (!escreveTudo && (charCount < fullText.Length && (timer < (Time.time))))
         {
             m_TextMeshProUGUI.text += fullText[charCount++];
-            timer = Time.time + writeLetterSeconds;
+            timer = Time.time + GameManager.instance.writeLetterSeconds;
         }
     }
 
-    private void StartDialogWriter()
+    public void StartDialogWriter(string text)
     {
+        escreveTudo = false;
+        fullText = StringReplacer.Replace(text, replaces);
         if (m_AudioSource) m_AudioSource.Play();
         if (m_TextMeshProUGUI) m_TextMeshProUGUI.text = "";
-        timer = Time.time + writeLetterSeconds;
+        timer = Time.time + GameManager.instance.writeLetterSeconds;
         charCount = 0;
+    }
+
+    public void ResumeDialog()
+    {
+        escreveTudo = true;
+        m_TextMeshProUGUI.text = fullText;
     }
 }

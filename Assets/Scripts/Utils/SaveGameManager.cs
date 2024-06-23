@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,10 +7,22 @@ public class SaveGameManager
 {
     public PlayerData playerData = new PlayerData();
 
-    private static string playerDataPath = Application.persistentDataPath + "/PlayerData.json";
+    private static string playerDataPath = Application.persistentDataPath + "/SaveData.json";
 
     public SaveGameManager() { 
         LoadGame();
+    }
+
+    public void NewGame()
+    {
+        PlayerData newPlayerData = new PlayerData();
+
+        if (playerData?.musicVolume != null) newPlayerData.musicVolume = playerData.musicVolume; 
+        if (playerData?.muted != null) newPlayerData.muted = playerData.muted;
+        
+        playerData = newPlayerData;
+        string playerDataJson = JsonUtility.ToJson(playerData);
+        System.IO.File.WriteAllText(playerDataPath, playerDataJson);
     }
 
     public void LoadGame()
@@ -21,8 +34,7 @@ public class SaveGameManager
 
         } catch (FileNotFoundException)
         {
-            Debug.Log($"Arquivo de save não encontrado em: ${playerDataPath}");
-            SaveGame();
+            NewGame();
         }
     }
 
@@ -30,7 +42,6 @@ public class SaveGameManager
     {
         string playerDataJson = JsonUtility.ToJson(playerData);
         System.IO.File.WriteAllText(playerDataPath, playerDataJson);
-        Debug.Log($"Jogo salvo em: {playerDataPath}");
     }
 }
 
@@ -38,7 +49,8 @@ public class SaveGameManager
 public class PlayerData
 {
     public bool jogoIniciado = false;
-    public string name = "Jogador";
+    public DateTime startDate = DateTime.Now;
+    public string name = "";
     public float musicVolume = 1.0f;
     public bool muted = false;
     public List<LevelData> levelDataList = new List<LevelData>();
@@ -48,14 +60,15 @@ public class PlayerData
 public class LevelData
 {
     public string name;
-    public float score=0;
-    public List<ColetavelData> itensColetadosList = new List<ColetavelData>();
-    public List<ColetavelData> itensColetaveisList = new List<ColetavelData>();
+    public int ultimaFaseConcluida = 0;
+    public List<FaseData> faseDataList = new List<FaseData>();
 }
 
 [System.Serializable]
-public class ColetavelData
+public class FaseData
 {
-    public int indiceNaListaOriginal;
-    public ColetavelName nome;
+    public string name;
+    public float score = 0;
+    public List<ColetavelName> itensColetados = new List<ColetavelName>();
 }
+

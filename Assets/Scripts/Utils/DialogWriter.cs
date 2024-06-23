@@ -16,14 +16,6 @@ public class DialogWriter : MonoBehaviour
     private float timer;
     private bool escreveTudo = false;
 
-    private Dictionary<string, string> replaces = new Dictionary<string, string>
-    {   //Variáveis do texto devem ser escritas no Text com chaves ex {JOGADOR_NOME}
-        {"JOGADOR_NOME", GameManager.instance.nomePersonagem},
-        {"SCORE_TOTAL", GameManager.instance.scoreTotal},
-        {"SAVE_DATE", GameManager.instance.startDate},
-        {"SCORE_FASE", GameManager.instance.faseScore.ToString()},
-    };
-
     void Awake()
     {
         m_AudioSource = GetComponent<AudioSource>();
@@ -41,6 +33,14 @@ public class DialogWriter : MonoBehaviour
 
     public void StartDialogWriter(string text)
     {
+        Dictionary<string, string> replaces = new Dictionary<string, string>
+        {   //Variáveis do texto devem ser escritas no Text com chaves ex {JOGADOR_NOME}
+            {"JOGADOR_NOME", GameManager.instance.nomePersonagem},
+            {"SCORE_TOTAL", GameManager.instance.scoreTotal},
+            {"SAVE_DATE", GameManager.instance.startDate},
+            {"SCORE_FASE", GameManager.instance.faseScore.ToString()},
+        };
+
         escreveTudo = false;
         fullText = StringReplacer.Replace(text, replaces);
         if (m_AudioSource) m_AudioSource.Play();

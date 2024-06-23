@@ -1580,7 +1580,7 @@ GameObject:
   - component: {fileID: 1732898464}
   - component: {fileID: 1732898463}
   m_Layer: 5
-  m_Name: "Cr\xE9ditosButton"
+  m_Name: CreditosButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1671,7 +1671,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: "Cr\xE9ditosScene"
+          m_StringArgument: CreditosScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1732898465

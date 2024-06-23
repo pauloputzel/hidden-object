@@ -55,6 +55,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   personagemImage: {fileID: 4656249836604192240}
+  dialogoPanel: {fileID: 6960256732222589567}
   dialogoText: {fileID: 1845030328394282464}
   continuarButton: {fileID: 1908092531957621874}
   dialogWriter: {fileID: 4829791678546356000}
@@ -456,7 +457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3265618879953564327
 RectTransform:
   m_ObjectHideFlags: 0
@@ -531,7 +532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1448744597728945960
 RectTransform:
   m_ObjectHideFlags: 0

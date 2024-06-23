@@ -16,6 +16,9 @@ public class DialogoPersonagemUnicoController : MonoBehaviour
     private Image personagemImage;
 
     [SerializeField]
+    private GameObject dialogoPanel;
+
+    [SerializeField]
     private TextMeshProUGUI dialogoText;
 
     [SerializeField]
@@ -32,11 +35,13 @@ public class DialogoPersonagemUnicoController : MonoBehaviour
 
     void Start()
     {
+        dialogoPanel.SetActive(true);
+        personagemImage.gameObject.SetActive(true);
         personagemImage.sprite = dialogoData.personagemSprite;
         continuarButton.onClick.RemoveAllListeners();
         continuarButton.onClick.AddListener(() =>
         {
-            if (escritaIniciada)
+            if (escritaIniciada && !dialogWriter.escreveuTudo)
             {
                 dialogWriter.ResumeDialog();
                 escritaIniciada = false;

@@ -67,6 +67,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool primeiraFaseJogada
+    {
+        get
+        {
+            if (saveGameManager.playerData.levelDataList.Count > 0)
+            {
+                int qtdFases = 0;
+                saveGameManager.playerData.levelDataList.ForEach(x => qtdFases += x.faseDataList.Count);
+                return qtdFases > 0;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    public bool segundaFaseJogada
+    {
+        get
+        {
+            if (saveGameManager.playerData.levelDataList.Count > 0)
+            {
+                int qtdFases = 0;
+                saveGameManager.playerData.levelDataList.ForEach(x => qtdFases += x.faseDataList.Count);
+                return qtdFases > 1;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
     public string scoreTotal
     {
         get
@@ -83,7 +117,7 @@ public class GameManager : MonoBehaviour
         set
         {
             LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == value);
-            if (levelSelecionado != null) _faseAtual = levelSelecionado.ultimaFaseConcluida;
+            _faseAtual = levelSelecionado != null ? levelSelecionado.ultimaFaseConcluida : 0;
             _levelAtual = value;
         }
     }

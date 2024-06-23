@@ -5,6 +5,10 @@ using UnityEngine.Windows;
 
 public class DialogWriter : MonoBehaviour
 {
+    public bool escreveuTudo
+    {
+        get => !(charCount < fullText.Length);
+    }
     private AudioSource m_AudioSource;
     private TextMeshProUGUI m_TextMeshProUGUI;
     private string fullText;

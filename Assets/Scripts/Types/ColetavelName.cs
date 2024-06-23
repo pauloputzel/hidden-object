@@ -3,38 +3,32 @@ using System.ComponentModel;
 public enum ColetavelName
 {
     Nenhum, //Não usar esse valor
-    Almofada,
-    Ankh,
-    Antena,
-    Balde,
-    Bola,
-    Borboleta,
-    [Description("Bule de cerâmica")] BuleDeCeramica,
-    Cachorro,
-    Cadeira,
-    [Description("Carrinho de brinquedo")] CarrinhoDeBrinquedo,
-    [Description("Casa de cachorro")] CasaDeCachorro,
-    Copo,
-    [Description("Fonte de água")] FonteDeAgua,
-    [Description("Gaiola de passarinho")] GaiolaDePassarinho,
-    Joaninha,
-    [Description("Jornal enrolado")] JornalEnrolado,
-    [Description("Linha de costura")] LinhaDeCostura,
-    Livro,
-    [Description("Luvas de jardinagem")] LuvasDeJardinagem,
-    Mangueira,
-    [Description("Ninho de passarinho")] NinhoDePassarinho,
-    [Description("Orquídea")] Orquidea,
-    [Description("Orquídea Suspensa")] OrquideaSuspensa,
-    Pipa,
-    Pneu,
-    [Description("Pote de ração de pet")] PoteDeRacaoDePet,
-    [Description("Pote de água de pet")] PoteDeAguaDePet,
-    [Description("Poça de água")] PocaDeAgua,
-    Regador,
-    Rosas,
-    [Description("Tesoura de jardinagem")] TesouraDeJardinagem,
-    Torneira,
-    [Description("Xícara")] Xicara,
 
+    [Description("Espada com espaço")]
+    Espada,
+
+    Mochila,
+
+    [Description("Livro de Programação")]
+    Livro,
+
+    Cinto,
+
+    Papel,
+
+    Tijolo,
+
+    Lanterna,
+
+    Facao,
+
+    Pena,
+
+    Trevo,
+
+    Remedio,
+
+    Martelo,
+
+    Bomba
 }

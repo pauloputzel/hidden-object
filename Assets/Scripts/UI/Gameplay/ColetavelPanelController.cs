@@ -8,34 +8,41 @@ public class ColetavelPanelController : MonoBehaviour
 
     public GameObject content;
 
-    private Dictionary<ColetavelName, GameObject> itensMostrados = new Dictionary<ColetavelName, GameObject>();
+    private List<ColetavelName> displayedColetavelItens;
 
+    private int totalItensColetaveis;
+
+    // Start is called before the first frame update
     void Start()
     {
-        criarListaDeItens();
+        displayedColetavelItens = GameManager.instance.getLevelProximosColetaveisList();
+        criarItens();
     }
 
-    public void criarListaDeItens()
+    // Update is called once per frame
+    void Update()
     {
-        itensMostrados.Clear();
+        displayedColetavelItens = GameManager.instance.getLevelProximosColetaveisList();
+
+        if (totalItensColetaveis != displayedColetavelItens.Count)
+        {
+            criarItens();
+        }
+    }
+
+    private void criarItens()
+    {
+        totalItensColetaveis = displayedColetavelItens.Count;
 
         foreach (Transform child in content.transform)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (ColetavelName coletavelName in GameManager.instance.listaItensColetaveis)
+        foreach (ColetavelName coletavelName in displayedColetavelItens)
         {
             GameObject createdObject = Instantiate(prefabItemColetavel, content.transform);
             createdObject.GetComponent<TextMeshProUGUI>().text = EnumUtils.GetEnumDescription(coletavelName);
-            itensMostrados.Add(coletavelName, createdObject);
         }
-    }
-
-    public GameObject encontrarTextDaLista(ColetavelName coletavelName)
-    {
-        if (itensMostrados.ContainsKey(coletavelName)) return itensMostrados[coletavelName];
-
-        return null;
     }
 }

@@ -3,28 +3,38 @@ using UnityEngine;
 
 public class GameMessageController : MonoBehaviour
 {
-    [SerializeField]
+    public float displaySeconds = 0.3f;
+
     private TextMeshProUGUI textMeshPro;
 
     private float displayTimer;
+
+    void Start()
+    {
+        textMeshPro = GetComponentInChildren<TextMeshProUGUI>();
+        GameManager.instance.setGameMessageController(this);
+        gameObject.SetActive(false);
+    }
 
     void Update()
     {
         if (displayTimer > 0f && displayTimer < Time.time) 
         {
-            Destroy(gameObject);
+            hidePanel();
         }
     }
 
     public void showMessage(string message)
     {
+        displayTimer = Time.time + displaySeconds;
         textMeshPro.text = message;
-        displayTimer = Time.time + GameManager.instance.showGameMessageSeconds;
+        gameObject.SetActive(true);
     }
 
-    public void showMessage(string message, float tempoSeg)
+    private void hidePanel()
     {
-        textMeshPro.text = message;
-        displayTimer = Time.time + tempoSeg;
+        displayTimer = 0f;
+        textMeshPro.text = "";
+        gameObject.SetActive(false);
     }
 }

@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class LocalController : MonoBehaviour
 {
-    public string nomeLevelScene;
-    public string nomeLocal;
+    [SerializeField] public LevelManagerScriptableObject levelData;
     public CenarioMenu cenarioMenu;
 
 
@@ -12,13 +11,25 @@ public class LocalController : MonoBehaviour
     {
         if (GameManager.instance.jogoPausado) return;
 
-        cenarioMenu.mapaNomeText.text = nomeLocal;
-        GameManager.instance.levelAtual = nomeLevelScene;
-        cenarioMenu.fasesConcluidasText.text = $"FASES CONCLUÍDAS: {GameManager.instance.ultimaFaseConcluida}";
-        cenarioMenu.scoreText.text = $"SCORE TOTAL: {GameManager.instance.levelScore}";
+        cenarioMenu.mapaNomeText.text = levelData.nomeLocal;
+        GameManager.instance.levelAtual = levelData.nomeLevelScene;
+        cenarioMenu.scoreText.text = levelData.pontuacaoMaxima.ToString();
+        cenarioMenu.scorePlayedText.text = GameManager.instance.levelScore.ToString();
+        cenarioMenu.cenarioImage.sprite = levelData.spriteCenario;
 
         cenarioMenu.continuarButton.onClick.RemoveAllListeners();
-        cenarioMenu.continuarButton.onClick.AddListener(() => { GameManager.instance.carregarScene(nomeLevelScene); });
-        cenarioMenu.gameObject.SetActive(true);
+        cenarioMenu.continuarButton.onClick.AddListener(() => { GameManager.instance.carregarScene(levelData.nomeLevelScene); });
+
+        if (GameManager.instance.fasesConcluidas < levelData.listaFases.Count)
+        {
+            cenarioMenu.continuarButton.interactable = true;
+        } 
+        else
+        {
+            cenarioMenu.continuarButton.interactable = false;
+            cenarioMenu.continuarButton.GetComponentInChildren<TextMeshProUGUI>().text = "NÍVEL CONCLUÍDO";
+        }
+
+        cenarioMenu.SetActive(true);
     }
 }

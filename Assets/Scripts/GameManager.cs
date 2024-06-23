@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameManagerScriptableObject gameManagerData;
+    public GameObject gameMessagePrefab;
 
     public bool jogoPausado
     {
@@ -18,11 +20,8 @@ public class GameManager : MonoBehaviour
     public float contadorTimerSegundos
     {
         get => levelManager ? levelManager.contadorSegundos : 90f;
-        set {
-            if (levelManager)
-            {
-                levelManager.contadorSegundos = value;
-            }
+        set { 
+            if (levelManager) levelManager.contadorSegundos = value; 
         }
     }
 
@@ -50,14 +49,12 @@ public class GameManager : MonoBehaviour
     {
         get => gameManagerData.tempoMinimoLoadSegundos;
         set => gameManagerData.tempoMinimoLoadSegundos = value;
-
     }
 
     public float showGameMessageSeconds
     {
         get => gameManagerData.showGameMessageSeconds;
         set => gameManagerData.showGameMessageSeconds = value;
-
     }
 
     public string nomePersonagem
@@ -67,6 +64,40 @@ public class GameManager : MonoBehaviour
         {
             saveGameManager.playerData.name = value;
             saveGameManager.SaveGame();
+        }
+    }
+
+    public bool primeiraFaseJogada
+    {
+        get
+        {
+            if (saveGameManager.playerData.levelDataList.Count > 0)
+            {
+                int qtdFases = 0;
+                saveGameManager.playerData.levelDataList.ForEach(x => qtdFases += x.faseDataList.Count);
+                return qtdFases > 0;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    public bool segundaFaseJogada
+    {
+        get
+        {
+            if (saveGameManager.playerData.levelDataList.Count > 0)
+            {
+                int qtdFases = 0;
+                saveGameManager.playerData.levelDataList.ForEach(x => qtdFases += x.faseDataList.Count);
+                return qtdFases > 1;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -86,8 +117,18 @@ public class GameManager : MonoBehaviour
         set
         {
             LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == value);
-            if (levelSelecionado != null) _faseAtual = levelSelecionado.ultimaFaseConcluida;
+            _faseAtual = levelSelecionado != null ? levelSelecionado.ultimaFaseConcluida : 0;
             _levelAtual = value;
+        }
+    }
+
+    public int fasesConcluidas
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            if (levelSelecionado != null) return levelSelecionado.faseDataList.Count;
+            return 0;
         }
     }
 
@@ -168,7 +209,7 @@ public class GameManager : MonoBehaviour
         get => saveGameManager.playerData.muted;
         set
         {
-            mAudioListener.enabled = !value;                //A exclamação antes de value inverte a condição do bool que está recebendo Se GameManager.instance.muted = true então a propriedade enabled do componente de escuta recebe o oposto (false)
+            AudioListener.volume = value ? 0 : 1;                //A exclamação antes de value inverte a condição do bool que está recebendo Se GameManager.instance.muted = true então a propriedade enabled do componente de escuta recebe o oposto (false)
             saveGameManager.playerData.muted = value;       //armazena o valor na estrutura de dados e salva
             saveGameManager.SaveGame();
         }
@@ -179,9 +220,7 @@ public class GameManager : MonoBehaviour
         get => sceneNameToLoad;
     }
     
-    private AudioListener mAudioListener;                   //Componente do Gameobject GameManager para controle do muted
     private AudioSource mAudioSource;                       //Componente do Gameobject GameManager para controle de volume da música
-    private GameMessageController gameMessage;              //Controle do GameObject GameMessage que foi pré adicionado na scene atual o GameMessage faz seu registro nesta propriedade 
     private SaveGameManager saveGameManager;                //Classe responsável por salvar o jogo o próprio GameManager cria um objeto dessa classe ao iniciar
     private LevelManager levelManager;                      //Gerenciador de níveis Ao iniciar uma scene onde exista um GameObject LevelManager este irá armazenar sua referência aqui
     private string sceneNameToLoad = "MenuScene";
@@ -197,13 +236,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        mAudioListener = GetComponent<AudioListener>();                 //registra componente de escuta de Audio no jogo
-        mAudioSource = GetComponent<AudioSource>();                     //registra componente de Musica do jogo
-        saveGameManager = new SaveGameManager();                        //inicia um novo Gerenciador de SaveGame o Gerenciador já busca pelo jogo salvo ao ser iniciado
-        mAudioSource.volume = saveGameManager.playerData.musicVolume;   //ajusta o volume do componente conforme salvo em arquivo
-        mAudioListener.enabled = !saveGameManager.playerData.muted;     //muta ou desmuta o jogo conforme salvo em arquivo
-        instance = this;                                                //armaezena esse próprio primeiro GameManager na variável instance assumindo o controle do jogo
-        DontDestroyOnLoad(gameObject);                                  //Configura esse GameObject para não ser destruído ao trocar de scene
+        mAudioSource = GetComponent<AudioSource>();                      //registra componente de Musica do jogo
+        saveGameManager = new SaveGameManager();                         //inicia um novo Gerenciador de SaveGame o Gerenciador já busca pelo jogo salvo ao ser iniciado
+        mAudioSource.volume = saveGameManager.playerData.musicVolume;    //ajusta o volume do componente conforme salvo em arquivo
+        muted = saveGameManager.playerData.muted;                        //muta ou desmuta o jogo conforme salvo em arquivo
+        instance = this;                                                 //armaezena esse próprio primeiro GameManager na variável instance assumindo o controle do jogo
+        DontDestroyOnLoad(gameObject);                                   //Configura esse GameObject para não ser destruído ao trocar de scene
     }
 
     public void coletarItem(ColetavelName coletavelNome, GameObject coletavel)
@@ -270,15 +308,17 @@ public class GameManager : MonoBehaviour
         saveGameManager.SaveGame();
     }
 
-    public void setGameMessageController(GameMessageController gameMessage)
-    {
-        this.gameMessage = gameMessage;
-        this.gameMessage.displaySeconds = showGameMessageSeconds;
-    }
-
     public void showGameMessage(string message)
     {
-        if (gameMessage) gameMessage.showMessage(message);
+        GameMessageController gameMsgCtl = Instantiate(gameMessagePrefab).GetComponent<GameMessageController>();
+        gameMsgCtl.showMessage(message);
+    }
+
+    public void showGameMessage(string message, float tempoSeg, Transform canvasTransform, RectTransform rect)
+    {
+        GameMessageController gameMsgCtl = Instantiate(gameMessagePrefab, canvasTransform).GetComponent<GameMessageController>();
+        gameMsgCtl.GetComponent<RectTransform>().position = rect.position;
+        gameMsgCtl.showMessage(message, tempoSeg);
     }
 
     public void carregarScene(string nomeScene)

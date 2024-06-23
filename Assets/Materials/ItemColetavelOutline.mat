@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ItemColetavelOutline
-  m_Shader: {fileID: -6465566751694194690, guid: 53f4a074f0c963446877c793445c8ce4, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 81dfc76ba0709a341b32ba155b0a4836, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 0b00f46a82c33954b9fa9c335dfd8a9e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:

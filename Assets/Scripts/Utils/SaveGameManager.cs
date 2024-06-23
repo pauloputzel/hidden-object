@@ -15,10 +15,14 @@ public class SaveGameManager
 
     public void NewGame()
     {
-        playerData = new PlayerData();
+        PlayerData newPlayerData = new PlayerData();
+
+        if (playerData?.musicVolume != null) newPlayerData.musicVolume = playerData.musicVolume; 
+        if (playerData?.muted != null) newPlayerData.muted = playerData.muted;
+        
+        playerData = newPlayerData;
         string playerDataJson = JsonUtility.ToJson(playerData);
         System.IO.File.WriteAllText(playerDataPath, playerDataJson);
-        Debug.Log($"Jogo salvo em: {playerDataPath}");
     }
 
     public void LoadGame()
@@ -30,7 +34,6 @@ public class SaveGameManager
 
         } catch (FileNotFoundException)
         {
-            Debug.Log($"Criando novo savegame em: ${playerDataPath}");
             NewGame();
         }
     }
@@ -39,7 +42,6 @@ public class SaveGameManager
     {
         string playerDataJson = JsonUtility.ToJson(playerData);
         System.IO.File.WriteAllText(playerDataPath, playerDataJson);
-        Debug.Log($"Jogo salvo em: {playerDataPath}");
     }
 }
 

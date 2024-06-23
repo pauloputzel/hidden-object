@@ -12,19 +12,42 @@ public class Fase
 public class LevelManagerScriptableObject : ScriptableObject
 {
     [SerializeField]
-    public List<Fase> listaFases = new List<Fase>();
+    public string nomeLevelScene;
 
-    //Tempo base de duração de um nível em segundos
+    [SerializeField]
+    public string nomeLocal;
+
+    [SerializeField]
+    public Sprite spriteCenario;
+
+    [SerializeField]
     public float contadorSegundos = 90;
 
-    //Quantidade máxima de coletáveis que serão exibidos
+    [SerializeField]
     public int maximoColetavel;
 
-    //Pontuação base de um item coletado
+    [SerializeField]
     public float pontoBasePorItem = 5000;
 
-    //Quantidade de itens necessários coletar para encher o combo
+    [SerializeField]
     public int quantidadeItensParaComboCheio = 3;
 
+    [SerializeField]
     public GameObject textoAnimadoPontosColetadosPrefab;
+
+    [SerializeField]
+    public List<Fase> listaFases = new List<Fase>();
+
+    public int pontuacaoMaxima 
+    {
+        get 
+        {
+            float scorePotencial = 0f;
+            listaFases.ForEach(x => scorePotencial += x.listaColetaveis.Count * pontoBasePorItem);
+
+            scorePotencial += listaFases.Count * Mathf.Floor((contadorSegundos) * 10000);
+
+            return Mathf.CeilToInt(scorePotencial);
+        }
+    }
 }

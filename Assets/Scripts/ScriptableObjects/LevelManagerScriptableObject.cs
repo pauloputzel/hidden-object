@@ -18,7 +18,7 @@ public class LevelManagerScriptableObject : ScriptableObject
     public string nomeLocal;
 
     [SerializeField]
-    public int pontuacaoMaxima;
+    public Sprite spriteCenario;
 
     [SerializeField]
     public float contadorSegundos = 90;
@@ -37,4 +37,17 @@ public class LevelManagerScriptableObject : ScriptableObject
 
     [SerializeField]
     public List<Fase> listaFases = new List<Fase>();
+
+    public int pontuacaoMaxima 
+    {
+        get 
+        {
+            float scorePotencial = 0f;
+            listaFases.ForEach(x => scorePotencial += x.listaColetaveis.Count * pontoBasePorItem);
+
+            scorePotencial += listaFases.Count * Mathf.Floor((contadorSegundos) * 10000);
+
+            return Mathf.CeilToInt(scorePotencial);
+        }
+    }
 }

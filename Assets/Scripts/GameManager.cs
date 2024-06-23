@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
@@ -84,6 +85,16 @@ public class GameManager : MonoBehaviour
             LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == value);
             if (levelSelecionado != null) _faseAtual = levelSelecionado.ultimaFaseConcluida;
             _levelAtual = value;
+        }
+    }
+
+    public int fasesConcluidas
+    {
+        get
+        {
+            LevelData levelSelecionado = saveGameManager.playerData.levelDataList.Find(x => x.name == _levelAtual);
+            if (levelSelecionado != null) return levelSelecionado.faseDataList.Count;
+            return 0;
         }
     }
 

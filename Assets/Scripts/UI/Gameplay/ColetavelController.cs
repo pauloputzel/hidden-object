@@ -100,6 +100,7 @@ public class ColetavelController : MonoBehaviour
             {
                 coletando = false;
                 chegouNoDestino = true;
+                GameManager.instance.jogoPausado = false;
             }
 
             if (detalhesAnimExecutando && coletavelDaDengue)

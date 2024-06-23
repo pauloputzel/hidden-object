@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeLevelScene: Level01
   nomeLocal: Level Um Nome
-  pontuacaoMaxima: 15000
+  spriteCenario: {fileID: 21300000, guid: fc67597480166a245a95a574d9ee0ac8, type: 3}
   contadorSegundos: 90
-  maximoColetavel: 5
+  maximoColetavel: 6
   pontoBasePorItem: 5000
   quantidadeItensParaComboCheio: 3
   textoAnimadoPontosColetadosPrefab: {fileID: 4869686845513646814, guid: 9f865f8c0c363f44f8faa3499c608e6a, type: 3}

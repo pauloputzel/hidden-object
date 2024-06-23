@@ -6,6 +6,8 @@ public class CenarioMenu : MonoBehaviour
 {
     public TextMeshProUGUI mapaNomeText;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI scorePlayedText;
+    public Image cenarioImage;
     public Button continuarButton;
 
     private Button fecharButton;

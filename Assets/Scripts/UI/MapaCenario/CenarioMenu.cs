@@ -32,9 +32,17 @@ public class CenarioMenu : MonoBehaviour
     public void SetActive(bool active)
     {
         GameManager.instance.jogoPausado = active;
-        fecharButton.enabled = false;
         abrindoTime = Time.time;
         abrindo = active;
-        gameObject.SetActive(active);
+        if (active)
+        {
+            gameObject.SetActive(true);
+            if (fecharButton) fecharButton.enabled = false;
+        }
+        else
+        {
+            fecharButton.enabled = false;
+            gameObject.SetActive(false);
+        }
     }
 }

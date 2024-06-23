@@ -2290,7 +2290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapaNomeText: {fileID: 1816405746}
-  scoreText: {fileID: 715659834}
+  scoreText: {fileID: 1226199916}
   continuarButton: {fileID: 1135287697}
 --- !u!114 &1446288728
 MonoBehaviour:

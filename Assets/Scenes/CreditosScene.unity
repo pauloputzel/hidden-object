@@ -543,14 +543,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Prof. Rodrigo Oliveira de Oliveira\r \nProf. \xC2ngelo Kusmann Cavalet\nVit\xF3ria
     Paiz\nJulio Avila\nAndr\xE9 Cella, Camilla Oliveira, Julio Avila, Paulo Putzel
-    e Vit\xF3ria Paiz\r\nCamilla Oliveira\nVit\xF3ria Paiz\nCamilla Oliveira\nPaulo
-    Putzel e Andr\xE9 Cella\r\nMaria Assunta\r\nJo\xE3o In\xE1cio, Dafne Pedroso,
-    Keilla Moraes, Rubens Paiz, Cristal, Dorado Lucas, Amanda Pain, Paulo S\xE9rgio
-    Putzel, Fernanda Dziedzic, Nobu, Lili (in memorian), Ataliba (in memorian), Yasmin
-    Cella Machado Maria Eduarda Trabuco, Gustavo Silvani, Caroline Guindani, Murilo
-    Sbaraini, Alan Dal Pizzol. Agradecemos a todo o apoio do curso de Design e da
-    Unochapec\xF3\r\nTrilhas sonoras Kevin Mcleod(incompetech.com)\r\nEste jogo foi
-    desenvolvido com o aux\xEDlio de intelig\xEAncias artificiais\r\n"
+    e Vit\xF3ria Paiz\r\nCamilla Oliveira\nVit\xF3ria Paiz e Camilla Oliveira\nCamilla
+    Oliveira\nPaulo Putzel e Andr\xE9 Cella\r\nMaria Assunta\r\nJo\xE3o In\xE1cio,
+    Dafne Pedroso, Keilla Moraes, Rubens Paiz, Cristal, Dorado Lucas, Amanda Pain,
+    Paulo S\xE9rgio Putzel, Fernanda Dziedzic, Nobu, Lili (in memorian), Ataliba
+    (in memorian), Yasmin Cella Machado Maria Eduarda Trabuco, Gustavo Silvani, Caroline
+    Guindani, Murilo Sbaraini, Alan Dal Pizzol. Agradecemos a todo o apoio do curso
+    de Design e da Unochapec\xF3\r\nTrilhas sonoras Kevin Mcleod(incompetech.com)\r\nEste
+    jogo foi desenvolvido com o aux\xEDlio de intelig\xEAncias artificiais\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6c1e7cc19ac1faa4682ae7f8554c27b0, type: 2}
   m_sharedMaterial: {fileID: 7151743141103170727, guid: 6c1e7cc19ac1faa4682ae7f8554c27b0, type: 2}
@@ -1198,8 +1198,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 20, y: -20}
-  m_SizeDelta: {x: 104.97, y: 69.98}
+  m_AnchoredPosition: {x: 32, y: -28}
+  m_SizeDelta: {x: 75.15, y: 50.102}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8187392644547828847
 MonoBehaviour:
@@ -1334,8 +1334,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

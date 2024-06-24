@@ -12,8 +12,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec8eb730e069fe488265a8daa847465, type: 3}
   m_Name: GameMessageLoading
   m_EditorClassIdentifier: 
-  segundosEntreMensagens: 0.6
+  segundosEntreMensagens: 2
   listaMensagens:
-  - texto: "Essa \xE9 uma mensagem da dengue"
-  - texto: "Essa \xE9 outra mensagem da dengue"
-  - texto: "Voc\xEA sabia que essa \xE9 mais uma mensagem da dangue?"
+  - texto: "Elimine \xE1gua parada em vasos de plantas.\n"
+  - texto: Mantenha piscinas sempre limpas e tratadas.
+  - texto: Verifique e limpe regularmente calhas e ralos.
+  - texto: 'Feche bem os sacos de lixo e mantenha lixeiras tampadas.
+
+'
+  - texto: 'Use telas em janelas e portas para evitar a entrada de mosquitos.
+
+'
+  - texto: "Troque a \xE1gua de bebedouros de animais diariamente.\r\n"
+  - texto: 'Limpe e escove regularmente as bandejas de ar-condicionado.
+
+'
+  - texto: "Utilize repelentes em \xE1reas expostas do corpo.\r\n"
+  - texto: "Use roupas que cubram o m\xE1ximo poss\xEDvel da pele.\r\n"
+  - texto: "Instale mosquiteiros em camas e ber\xE7os, se necess\xE1rio.\r\n"
+  - texto: 'Descarte adequadamente pneus velhos ou guarde-os em locais cobertos.
+
+'
+  - texto: "Mantenha caixas d'\xE1gua sempre fechadas com tampas adequadas.\r\n"
+  - texto: "Limpe regularmente baldes e garrafas que possam acumular \xE1gua.\r\n"
+  - texto: "Evite o ac\xFAmulo de \xE1gua em pratos de plantas.\r\n"
+  - texto: "Coloque areia nos pratinhos dos vasos para absorver a \xE1gua.\r\n"
+  - texto: "Mantenha \xE1reas ao redor da casa bem cuidadas e livres de entulhos.\r\n"
+  - texto: "Utilize larvicidas em \xE1reas propensas \xE0 forma\xE7\xE3o de criadouros.\r\n"
+  - texto: "Ensine e conscientize vizinhos sobre medidas de preven\xE7\xE3o.\r\n"
+  - texto: "Verifique regularmente a presen\xE7a de larvas em locais propensos.\r\n"
+  - texto: "Participe de campanhas de limpeza e conscientiza\xE7\xE3o na comunidade."
+  - texto: "Sabia que a dengue \xE9 transmitida pela picada do mosquito Aedes aegypti?\r\n"
+  - texto: "Voc\xEA sabia que existem quatro tipos diferentes de v\xEDrus da dengue?\r\n"
+  - texto: "A dengue pode causar sintomas como febre alta, dor de cabe\xE7a e dor
+      muscular intensa.\r\n"
+  - texto: "Mosquitos f\xEAmeas s\xE3o os respons\xE1veis pela transmiss\xE3o da
+      dengue.\r\n"
+  - texto: "A \xE1gua parada \xE9 o ambiente ideal para o mosquito da dengue se reproduzir.\r\n"
+  - texto: "A dengue \xE9 uma doen\xE7a que pode ser fatal em casos graves.\r\n"
+  - texto: "A vacina\xE7\xE3o \xE9 uma das principais formas de preven\xE7\xE3o contra
+      a dengue.\r\n"
+  - texto: "A dengue n\xE3o tem tratamento espec\xEDfico, apenas sintom\xE1tico.\r\n"
+  - texto: "A Organiza\xE7\xE3o Mundial da Sa\xFAde (OMS) estima que cerca de 2,5
+      bilh\xF5es de pessoas estejam em risco de contrair dengue.\r\n"
+  - texto: "A preven\xE7\xE3o \xE9 fundamental: elimine criadouros de mosquitos em
+      sua casa e comunidade.\r\n"
+  - texto: "A dengue \xE9 end\xEAmica em mais de 100 pa\xEDses, especialmente em
+      regi\xF5es tropicais e subtropicais."
+  - texto: "O mosquito Aedes aegypti, vetor da dengue, tamb\xE9m pode transmitir
+      zika, chikungunya e febre amarela."
+  - texto: "Os sintomas da dengue podem variar de leves a graves, com formas como
+      a dengue hemorr\xE1gica sendo potencialmente fatal."
+  - texto: "A palavra \"dengue\" vem do espanhol \"denga\", que significa \"doen\xE7a
+      febril\"."
+  - texto: "O combate \xE0 dengue envolve n\xE3o apenas controle de mosquitos, mas
+      tamb\xE9m educa\xE7\xE3o comunit\xE1ria e pol\xEDticas p\xFAblicas de sa\xFAde."
+  - texto: "A temperatura m\xE9dia ideal para o desenvolvimento do Aedes aegypti
+      \xE9 entre 25\xB0C e 28\xB0C."
+  - texto: "A dengue pode afetar pessoas de todas as idades, mas crian\xE7as pequenas
+      e idosos t\xEAm maior risco de complica\xE7\xF5es graves."
+  - texto: "A introdu\xE7\xE3o de novos sorotipos do v\xEDrus da dengue em \xE1reas
+      n\xE3o end\xEAmicas pode aumentar o risco de epidemias."
+  - texto: "Em \xE1reas urbanas, recipientes dom\xE9sticos como baldes, pneus e vasos
+      de plantas s\xE3o os principais criadouros do mosquito."
+  - texto: "Participe de campanhas de limpeza e conscientiza\xE7\xE3o na comunidade."

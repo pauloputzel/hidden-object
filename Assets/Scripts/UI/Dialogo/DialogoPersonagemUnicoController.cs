@@ -31,8 +31,6 @@ public class DialogoPersonagemUnicoController : MonoBehaviour
 
     private int dialogoAtual = 0;
 
-    private bool ultimoDialogo = false;
-
     void Start()
     {
         dialogoPanel.SetActive(true);

@@ -3,12 +3,14 @@ using UnityEngine;
 public class MaisDeUmaFaseJogada : MonoBehaviour
 {
     private DialogoPersonagemUnicoController dialogoController;
-    private BoxCollider2D localController;
+    private PolygonCollider2D colider2D;
+    private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
         dialogoController = gameObject.GetComponent<DialogoPersonagemUnicoController>();
-        localController = gameObject.GetComponent<BoxCollider2D>();
+        colider2D = gameObject.GetComponent<PolygonCollider2D>();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -16,7 +18,8 @@ public class MaisDeUmaFaseJogada : MonoBehaviour
         if (GameManager.instance && GameManager.instance.primeiraFaseJogada)
         {
             if (dialogoController != null) dialogoController.enabled = true;
-            if (localController != null) localController.enabled = true;
+            if (colider2D != null) colider2D.enabled = true;
+            if (spriteRenderer != null) spriteRenderer.enabled = true;
         }
     }
 }

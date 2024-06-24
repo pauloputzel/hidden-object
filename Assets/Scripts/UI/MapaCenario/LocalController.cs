@@ -6,8 +6,32 @@ public class LocalController : MonoBehaviour
     [SerializeField] public LevelManagerScriptableObject levelData;
     public CenarioMenu cenarioMenu;
 
+    private SpriteRenderer sprRenderer;
+    private MaterialPropertyBlock block;
 
-    void OnMouseDown()
+    private void Start()
+    {
+        block = new MaterialPropertyBlock();
+        sprRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnMouseOver()
+    {
+        sprRenderer.GetPropertyBlock(block);
+        block.SetColor("_Color", new Color(1024, 847, 0, 1));
+        block.SetFloat("_Thick", 3f);
+        sprRenderer.SetPropertyBlock(block);
+    }
+
+    private void OnMouseExit()
+    {
+        sprRenderer.GetPropertyBlock(block);
+        block.SetColor("_Color", new Color(0, 0, 0, 1));
+        block.SetFloat("_Thick", 0f);
+        sprRenderer.SetPropertyBlock(block);
+    }
+
+    private void OnMouseDown()
     {
         if (GameManager.instance.jogoPausado) return;
 

@@ -71,6 +71,7 @@ public class LevelManager : MonoBehaviour
         totalItensFase = _itensColetaveisList.Count;
         coletadosDisplayText.text = $"0/{totalItensFase}";
         GameManager.instance.jogoPausado = false;
+        GameManager.instance.trocaTrilha(levelManagerData.trilhaSonora);
     }
 
     public void Update()
@@ -118,6 +119,8 @@ public class LevelManager : MonoBehaviour
         GameObject textoNaLista = coletavelPanelController.encontrarTextDaLista(coletavelEncontrado);
         Image coletavelImage = detalhesColetavelPanel.coletavelImage;
 
+        GameManager.instance.tocarSomColeta();
+
         textoNaLista.GetComponent<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough | FontStyles.Bold;
 
         coletavel.transform.SetParent(canvas.transform);
@@ -156,6 +159,7 @@ public class LevelManager : MonoBehaviour
         phaseClearDisplayController.scoreDisplay.text = $"Pontuação: {_score}";
         phaseClearDisplayController.continuarButton.onClick.AddListener(() => {
             GameManager.instance.jogoPausado = false;
+            GameManager.instance.tocarTrilhaPadrao();
             GameManager.instance.carregarScene("MapaScene");
         });
         phaseClearDisplayController.gameObject.SetActive(true);

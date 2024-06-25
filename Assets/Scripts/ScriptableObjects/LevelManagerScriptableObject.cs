@@ -36,6 +36,9 @@ public class LevelManagerScriptableObject : ScriptableObject
     public GameObject textoAnimadoPontosColetadosPrefab;
 
     [SerializeField]
+    public AudioClip trilhaSonora;
+
+    [SerializeField]
     public List<Fase> listaFases = new List<Fase>();
 
     public int pontuacaoMaxima 

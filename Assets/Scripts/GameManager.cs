@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameManagerScriptableObject gameManagerData;
     public GameObject gameMessagePrefab;
+    public AudioSource SomColeta;
 
     public bool jogoPausado
     {
@@ -227,6 +228,7 @@ public class GameManager : MonoBehaviour
     private string _levelAtual = "";
     private int _faseAtual = 0;
     private bool _jogoPausado = false;
+    private AudioClip somGeral;
 
     public void Start()
     {
@@ -240,6 +242,7 @@ public class GameManager : MonoBehaviour
         saveGameManager = new SaveGameManager();                         //inicia um novo Gerenciador de SaveGame o Gerenciador já busca pelo jogo salvo ao ser iniciado
         mAudioSource.volume = saveGameManager.playerData.musicVolume;    //ajusta o volume do componente conforme salvo em arquivo
         muted = saveGameManager.playerData.muted;                        //muta ou desmuta o jogo conforme salvo em arquivo
+        somGeral = mAudioSource.clip;
         instance = this;                                                 //armaezena esse próprio primeiro GameManager na variável instance assumindo o controle do jogo
         DontDestroyOnLoad(gameObject);                                   //Configura esse GameObject para não ser destruído ao trocar de scene
     }
@@ -249,12 +252,30 @@ public class GameManager : MonoBehaviour
         if (!jogoPausado && levelManager) levelManager.coletarItem(coletavelNome, coletavel);
     }
 
+    public void tocarSomColeta()
+    {
+        SomColeta.Play();
+    }
+
+     public void trocaTrilha(AudioClip audioclip)
+    {
+        mAudioSource.clip = audioclip;
+        mAudioSource.Play();
+    }
+
+     public void tocarTrilhaPadrao()
+    {
+        mAudioSource.clip = somGeral;
+        mAudioSource.Play();
+    }
+
     public bool itemEstaNaListaDeColetaveis(ColetavelName nomeColetavel)
     {
         if (saveGameManager.playerData.levelDataList.Count == 0) return false;
 
         return saveGameManager.playerData.levelDataList.Exists(x => x.faseDataList.Exists(x => x.itensColetados.Contains(nomeColetavel)));
     }
+
     public void setLevelManager(LevelManager novoLevelManager)
     {
         levelManager = novoLevelManager;
@@ -265,12 +286,14 @@ public class GameManager : MonoBehaviour
     {
         levelManager.timeLeft = time;
     }
+
     public void LevelTimeOut()
     {
         jogoPausado = true;
         levelManager.timeoutDisplayController.scoreDisplay.text = $"SCORE: {levelManager.score}";
         levelManager.timeoutDisplayController.continuarButton.onClick.AddListener(() => {
             jogoPausado = false;
+            tocarTrilhaPadrao();
             carregarScene("MapaScene");
         });
         levelManager.timeoutDisplayController.gameObject.SetActive(true);

@@ -20,6 +20,7 @@ MonoBehaviour:
   pontoBasePorItem: 5000
   quantidadeItensParaComboCheio: 3
   textoAnimadoPontosColetadosPrefab: {fileID: 4869686845513646814, guid: 9f865f8c0c363f44f8faa3499c608e6a, type: 3}
+  trilhaSonora: {fileID: 8300000, guid: b92a2c6f7e87e494386ce808e639b9ed, type: 3}
   listaFases:
   - nome: Fase1
     listaColetaveis: 400000002500000027000000430000002b00000021000000350000003f000000510000004400000024000000340000004b000000

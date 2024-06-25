@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50891860bdf80d846a81ae1d1a30d58e, type: 3}
+  m_Name: Level03 - LevelManagerData
+  m_EditorClassIdentifier: 
+  nomeLevelScene: Level03
+  nomeLocal: Level Tres Nome
+  spriteCenario: {fileID: 21300000, guid: fc67597480166a245a95a574d9ee0ac8, type: 3}
+  contadorSegundos: 90
+  maximoColetavel: 6
+  pontoBasePorItem: 5000
+  quantidadeItensParaComboCheio: 3
+  textoAnimadoPontosColetadosPrefab: {fileID: 4869686845513646814, guid: 9f865f8c0c363f44f8faa3499c608e6a, type: 3}
+  listaFases:
+  - nome: Fase1
+    listaColetaveis: 010000000200000003000000040000000500000006000000070000000800000009000000
+  - nome: Fase2
+    listaColetaveis: 0a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000140000001500000016000000170000001800000019000000
+  - nome: Fase3
+    listaColetaveis: 1a0000001b0000001c0000001d0000001e0000001f0000002000000021000000

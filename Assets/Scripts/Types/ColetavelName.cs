@@ -3,32 +3,92 @@ using System.ComponentModel;
 public enum ColetavelName
 {
     Nenhum, //Não usar esse valor
-
-    [Description("Espada com espaço")]
-    Espada,
-
-    Mochila,
-
-    [Description("Livro de Programação")]
+    Almofada,
+    Ankh,
+    Antena,
+    Balde,
+    Bola,
+    Borboleta,
+    [Description("Bule de cerâmica")] BuleDeCeramica,
+    Cachorro,
+    Cadeira,
+    [Description("Carrinho de brinquedo")] CarrinhoDeBrinquedo,
+    [Description("Casa de cachorro")] CasaDeCachorro,
+    Copo,
+    [Description("Fonte de água")] FonteDeAgua,
+    [Description("Gaiola de passarinho")] GaiolaDePassarinho,
+    Joaninha,
+    [Description("Jornal enrolado")] JornalEnrolado,
+    [Description("Linha de costura")] LinhaDeCostura,
     Livro,
+    [Description("Luvas de jardinagem")] LuvasDeJardinagem,
+    Mangueira,
+    [Description("Ninho de passarinho")] NinhoDePassarinho,
+    [Description("Orquídea")] Orquidea,
+    [Description("Orquídea Suspensa")] OrquideaSuspensa,
+    Pipa,
+    Pneu,
+    [Description("Pote de ração de pet")] PoteDeRacaoDePet,
+    [Description("Pote de água de pet")] PoteDeAguaDePet,
+    [Description("Poça de água")] PocaDeAgua,
+    Regador,
+    Rosas,
+    [Description("Tesoura de jardinagem")] TesouraDeJardinagem,
+    Torneira,
+    [Description("Xícara")] Xicara,
 
-    Cinto,
-
-    Papel,
-
-    Tijolo,
-
-    Lanterna,
-
-    Facao,
-
-    Pena,
-
-    Trevo,
-
-    Remedio,
-
+    //Level 05
+    Bolsa,
+    [Description("Bloco de notas")] BlocoDeNotas,
+    Botas,
+    Boné,
+    [Description("Calendário")] Calendario,
+    [Description("Câmera de segurança")] CameraDeSegunraca,
+    Caneta,
+    Cano,
+    [Description("Cartas de baralho")] CartasDeBaralho,
+    Cartaz,
+    [Description("Caixa de papelão")] CaixaDePapelão,
+    [Description("Carrinho de carga")] CarrinhoDeCarga,
+    Celular,
+    [Description("Colete de Segurança")] ColeteDeSeguranca,
+    [Description("Cone de trânsito")] ConeDeTransito,
+    [Description("Copo de café")] CopoDeCafe,
+    Chaves,
+    [Description("Chave de fenda")] ChaveDeFenda,
+    [Description("Crachá de identificação")] CrachaDeIdentificacao,
+    Empilhadeira,
+    [Description("Extintor de incêndio")] ExtintorDeIncendio,
+    Furadeira,
+    [Description("Galão de gasolina")] GalaoDeGasolina,
+    [Description("Garrafa pet")] GarrafaPet,
+    Gato,
+    [Description("Fone de proteção")] FoneDeProteção,
+    Jaqueta,
+    Jornal,
+    [Description("Kit médico")] KitMedico,
+    [Description("Latinha de metal")] LatinhaDeMetal,
+    Lixeira,
+    [Description("Lata de tinta")] LataDeTinta,
+    [Description("Luvas de trabalho")] LuvasDeTrabalho,
+    Maleta,
     Martelo,
+    Ninho,
+    [Description("Óculos de segurança")] OculosDeSeguranca,
+    Pallet,
+    [Description("Pássaro")] Passaro,
+    Pinha,
+    [Description("Placa de chão molhado")] PlacaChaoMolhado,
+    [Description("Placa de segurança")] PlacaSeguranca,
+    [Description("Poça d'água")] PocaDAgua,
+    [Description("Prato plástico")] Pratoplastico,
+    [Description("Pratinho de Ração")] PratinhoDeRacao,
+    Pregos,
+    Prancheta,
+    [Description("Rádio")] Radio,
+    [Description("Relógio de parede")] RelogioDeParede,
+    [Description("Sanduíche")] Sanduiche,
+    Sino,
 
-    Bomba
+
 }

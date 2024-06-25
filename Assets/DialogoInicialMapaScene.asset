@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   personagemSprite: {fileID: 21300000, guid: 0db1fe174da65dc4c8cbc1fa47c38d6c, type: 3}
   listaDialogo:
-  - texto: 'Ah, prazer em te conhecer (nome do player) !
+  - texto: 'Ah, prazer em te conhecer {JOGADOR_NOME} !
 
-      Agora sem perder
-      tempo, vamos investigar a cidade !
+      Agora sem perder tempo,
+      vamos investigar a cidade !
 
-      
+
 
 '
   - texto: "Vamos come\xE7ar por algo simples, n\xE3o \xE9 dif\xEDcil, eu fiz at\xE9

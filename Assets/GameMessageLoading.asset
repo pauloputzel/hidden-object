@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec8eb730e069fe488265a8daa847465, type: 3}
   m_Name: GameMessageLoading
   m_EditorClassIdentifier: 
-  segundosEntreMensagens: 2
+  segundosEntreMensagens: 3
   listaMensagens:
   - texto: "Elimine \xE1gua parada em vasos de plantas.\n"
   - texto: Mantenha piscinas sempre limpas e tratadas.

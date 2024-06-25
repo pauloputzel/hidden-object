@@ -266,7 +266,7 @@ MonoBehaviour:
     imperdiet quis. Proin sed enim ac urna euismod fermentum.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: affc91f2feac2824d923f9e43eebf84b, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 6901793897663386517, guid: affc91f2feac2824d923f9e43eebf84b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -474,8 +474,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -147.16553, y: -40}
-  m_SizeDelta: {x: 432.2097, y: 545.203}
+  m_AnchoredPosition: {x: -127.51312, y: -35}
+  m_SizeDelta: {x: 466.3502, y: 502.5273}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7387048847590301882
 CanvasRenderer:
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0b00f46a82c33954b9fa9c335dfd8a9e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0db1fe174da65dc4c8cbc1fa47c38d6c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

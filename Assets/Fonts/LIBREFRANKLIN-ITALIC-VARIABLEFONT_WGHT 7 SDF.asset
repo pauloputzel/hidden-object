@@ -60,9 +60,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: LIBREFRANKLIN-ITALIC-VARIABLEFONT_WGHT 7 SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 1694573681
   material: {fileID: 4226661042786908696}
-  materialHashCode: 0
+  materialHashCode: -632514767
   m_Version: 1.1.0
   m_SourceFontFileGUID: c4888f493553fe343a45a26634086fea
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: c4888f493553fe343a45a26634086fea, type: 3}
@@ -5590,9 +5590,9 @@ Material:
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 1
-    - _ScaleRatioB: 1
-    - _ScaleRatioC: 1
+    - _ScaleRatioA: 0.8333333
+    - _ScaleRatioB: 0.6770833
+    - _ScaleRatioC: 0.6770833
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0

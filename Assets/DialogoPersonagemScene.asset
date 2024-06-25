@@ -12,16 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f90389d6dd6f30b458e24477d874e657, type: 3}
   m_Name: DialogoPersonagemScene
   m_EditorClassIdentifier: 
-  personagemSprite: {fileID: 21300000, guid: 5f1abbde30b65d046a9c6e432521df2d, type: 3}
+  personagemSprite: {fileID: 21300000, guid: 0db1fe174da65dc4c8cbc1fa47c38d6c, type: 3}
   listaDialogo:
-  - texto: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque
-      purus, luctus in felis sed, vehicula facilisis nibh. Vestibulum ante ipsum
-      primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse
-      dignissim diam et arcu sagittis, ac sagittis lacus feugiat. '
-  - texto: Curabitur imperdiet diam vitae scelerisque aliquet. Quisque imperdiet
-      neque felis, at mattis ipsum accumsan at. Aenean nec condimentum purus. Curabitur
-      sit amet massa viverra, bibendum tortor fringilla, aliquam tortor.
-  - texto: Sed ultrices non massa vel pulvinar. Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit. Praesent venenatis est vel est eleifend, sed feugiat mi luctus.
-      Vivamus sed porttitor augue. Donec hendrerit vehicula lectus, id mattis erat
-      imperdiet quis. Proin sed enim ac urna euismod fermentum.
+  - texto: "Ol\xE1! Ent\xE3o voc\xEA \xE9 o novo agente? Seja bem-vindo! \r\nAqui
+      n\xF3s somos respons\xE1veis por identificar e prevenir que o mosquito da Dengue
+      se espalhe e contamine a cidade."
+  - texto: "Precisaremos investigar alguns locais e retirar poss\xEDveis focos, conto
+      com voc\xEA."
+  - texto: "Ah, antes que eu me esque\xE7a. Eu sou Denise, sua supervisora. \nE voc\xEA,
+      como se chama?"

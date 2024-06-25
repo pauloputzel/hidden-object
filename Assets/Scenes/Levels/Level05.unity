@@ -16779,7 +16779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281106f2d567e464285ab96f064bc26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelManagerData: {fileID: 11400000, guid: 5389838b1cccf4b41812d8374c601461, type: 2}
+  levelManagerData: {fileID: 11400000, guid: 11f0fec5e1a71cf419016b237ebf8379, type: 2}
   coletavelPanelController: {fileID: 6734355877087795503}
   coletadosDisplayText: {fileID: 780907371}
   scoreDisplayText: {fileID: 1319443616}
